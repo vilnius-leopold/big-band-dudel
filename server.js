@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const app        = express();
 const jsonParser = bodyParser.json();
 
-var dataStore = fs.readFileSync('db/data.json', 'utf8');
+var dataStore = JSON.parse(fs.readFileSync('db/data.json', 'utf8'));
 
 app.post('/data', jsonParser, (req, res) => {
 	log('body', req.body);

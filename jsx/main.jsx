@@ -2,56 +2,9 @@
 
 const log = console.log.bind(console);
 
-
-var musicians = [
-	{
-		id: 1,
-		name: "John",
-		instrument: "trumpet"
-	},
-	{
-		id: 2,
-		name: "Tom",
-		instrument: "drums"
-	},
-	{
-		id: 3,
-		name: "Nick",
-		instrument: "bass"
-	}
-];
+var dataStore = null;
 
 var nextId = 4;
-
-var events = [
-	{
-		date: Date.now(),
-		title: "Some Concert",
-		lineUp: {
-			1: {status: 0},
-			2: {status: 1},
-			3: {status: 2}
-		}
-	},
-	{
-		date: Date.now() + 3000,
-		title: "Other Concert",
-		lineUp: {
-			1: {status: 0},
-			2: {status: 0},
-			3: {status: 2}
-		}
-	},
-	{
-		date: Date.now() - 3000,
-		title: "Cool Concert",
-		lineUp: {
-			1: {status: 1},
-			2: {status: 1},
-			3: {status: 0}
-		}
-	}
-];
 
 var statusIcons = {
 	0: '✗',
@@ -67,7 +20,8 @@ var statusClasses = {
 	3: ''
 };
 
-var showPopup = false;
+var showAddMusicianPopup = false;
+var showAddEventPopup    = false;
 
 var EventTable = React.createClass({
 	render() {
@@ -149,7 +103,7 @@ var AddMusicianPopup = React.createClass({
 			event.target.id === "popup-cancel-button" ||
 			event.target.id === "popup-close-button"
 		) {
-			showPopup = false;
+			showAddMusicianPopup = false;
 			updateApp();
 
 			this.setState({name: ''});
@@ -157,20 +111,18 @@ var AddMusicianPopup = React.createClass({
 		}
 	},
 	addMusician( event ) {
-		musicians.push({
+		dataStore.musicians.push({
 			id: nextId++,
 			name: this.state.name,
 			instrument: this.state.instrument
 		});
-		showPopup = false;
+		showAddMusicianPopup = false;
 		updateApp();
 
 		this.setState({name: ''});
 		this.setState({instrument: ''});
 
-		sendData({
-			musicians: musicians
-		}, function(err, response) {
+		sendData(dataStore, function(err, response) {
 			log('Done update remote DB', err, response);
 
 			if (err) {
@@ -180,7 +132,7 @@ var AddMusicianPopup = React.createClass({
 						alert('An ERROR occured:\n' + e);
 					} else {
 						// update local store
-						musicians = response.musicians;
+						dataStore = response;
 						updateApp();
 					}
 				});
@@ -188,7 +140,7 @@ var AddMusicianPopup = React.createClass({
 				alert('An ERROR occured:\n' + e);
 			} else {
 				// update local store
-				musicians = response.musicians;
+				dataStore = response;
 				updateApp();
 			}
 
@@ -224,10 +176,100 @@ var AddMusicianPopup = React.createClass({
 	}
 });
 
+var AddEventPopup = React.createClass({
+	getInitialState: function() {
+		return {
+			title       : '',
+			date : Date.now()
+		};
+	},
+	handleTitleChange: function(event) {
+		this.setState({title: event.target.value});
+	},
+	handleDateChange: function(event) {
+		this.setState({date: event.target.value});
+	},
+	closePopup( event ) {
+		if (
+			event.target.id === "popup-overlay" ||
+			event.target.id === "popup-cancel-button" ||
+			event.target.id === "popup-close-button"
+		) {
+			showAddEventPopup = false;
+			updateApp();
+
+			this.setState(this.getInitialState());
+		}
+	},
+	addEvent( event ) {
+		dataStore.events.push({
+			title: this.state.title,
+			date: this.state.date,
+			lineUp: {}
+		});
+		showAddEventPopup = false;
+		updateApp();
+
+		this.setState(this.getInitialState());
+
+		sendData(dataStore, function(err, response) {
+			log('Done update remote DB', err, response);
+
+			if (err) {
+				// reload from server
+				getData( (err, response) => {
+					if (err) {
+						alert('An ERROR occured:\n' + e);
+					} else {
+						// update local store
+						dataStore = response;
+						updateApp();
+					}
+				});
+
+				alert('An ERROR occured:\n' + e);
+			} else {
+				// update local store
+				dataStore = response;
+				updateApp();
+			}
+
+		});
+	},
+	render() {
+		return (
+			<div id="popup-overlay" className={this.props.show ? '' : 'hidden'} onClick={this.closePopup}>
+				<div id="popup-container">
+					<button id="popup-close-button">✕</button>
+					<h3>Add event</h3>
+					<label>Title</label>
+					<input
+						type="text"
+						placeholder="Royal Albert Hall London"
+						value={this.state.title}
+						onChange={this.handleTitleChange}
+					/>
+					<br />
+					<label>Date</label>
+					<input
+						type="text"
+						placeholder="dd/mm/yyyy"
+						value={this.state.date}
+						onChange={this.handleDateChange}
+					/>
+					<br />
+					<button className="btn btn-primary" onClick={this.addEvent}>Add</button>
+					<button id="popup-cancel-button" className="btn btn-default">Cancel</button>
+				</div>
+			</div>
+		);
+	}
+});
+
 var AddMusicianButton = React.createClass({
 	handleClick(){
 		console.log('Clicked AddMusicianButton');
-		showPopup = !showPopup;
+		showAddMusicianPopup = !showAddMusicianPopup;
 		updateApp();
 	},
 	render() {
@@ -242,16 +284,34 @@ var AddMusicianButton = React.createClass({
 	}
 });
 
+var AddEventButton = React.createClass({
+	handleClick(){
+		showAddEventPopup = ! showAddEventPopup;
+		updateApp();
+	},
+	render() {
+		return (
+			<button
+				className="btn btn-default"
+				onClick={this.handleClick}
+			>
+				Add event
+			</button>
+		);
+	}
+});
+
 function updateApp() {
 	ReactDOM.render(
 		<div className="container">
 			<h1>Big Band Dudle</h1>
 			<div>
 				<AddMusicianButton/>
-				<button className="btn btn-default">Add event</button>
+				<AddEventButton/>
 			</div>
-			<EventTable events={events} musicians={musicians} />
-			<AddMusicianPopup show={showPopup}/>
+			<EventTable events={dataStore.events} musicians={dataStore.musicians}/>
+			<AddMusicianPopup show={showAddMusicianPopup}/>
+			<AddEventPopup show={showAddEventPopup}/>
 		</div>,
 		document.getElementById('app')
 	);
@@ -322,7 +382,7 @@ getData( (err, response) => {
 		log('Some text');
 		// response = JSON.parse(response);
 		log('OnLoad Response:', response );
-		musicians = response.musicians;
+		dataStore = response;
 		updateApp();
 	}
 });
