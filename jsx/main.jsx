@@ -6,6 +6,32 @@ var dataStore = null;
 
 var nextId = 4;
 
+function getNextEventId() {
+	var nextEventId = 0;
+
+	dataStore.events.forEach( (e) => {
+		if ( e.id > nextEventId )
+			nextEventId = e.id;
+	});
+
+	nextEventId++;
+
+	return nextEventId;
+}
+
+function getNextMusicianId() {
+	var nextMusicianId = 0;
+
+	dataStore.musicians.forEach( (m) => {
+		if ( m.id > nextMusicianId )
+			nextMusicianId = m.id;
+	});
+
+	nextMusicianId++;
+
+	return nextMusicianId;
+}
+
 var statusIcons = {
 	0: '✗',
 	1: '✓',
@@ -23,6 +49,48 @@ var statusClasses = {
 var showAddMusicianPopup = false;
 var showAddEventPopup    = false;
 
+
+var MusicianItem = React.createClass({
+	render() {
+		return (
+			<th>{this.props.name} [{this.props.instrument}]</th>
+		);
+	}
+});
+
+var EventItem = React.createClass({
+	render() {
+		return (
+			<th>
+				{this.props.title}
+				<br />
+				{this.props.date}
+			</th>
+		);
+	}
+});
+
+var StatusItem = React.createClass({
+	handleClick() {
+		log('Clicked statusItem!');
+		$('#' + this.props.id).popover({
+			html: this.props.id
+		});
+		log('Clicked statusItem!', this.props.id);
+	},
+	render() {
+		return (
+			<td
+				id={this.props.id}
+				className={statusClasses[this.props.status]}
+				onClick={this.handleClick}
+			>
+				{statusIcons[this.props.status]}
+			</td>
+		);
+	}
+});
+
 var EventTable = React.createClass({
 	render() {
 		var sortedMusicians = this.props.musicians.sort( (a,b) => {
@@ -37,7 +105,7 @@ var EventTable = React.createClass({
 			return a.date - b.date;
 		});
 
-		var rows = sortedMusicians.map( (musician) => {
+		var rows = sortedMusicians.map( (musician, i) => {
 			var columns = sortedEvents.map( (event) => {
 				var musicianInLineUp = event.lineUp[musician.id];
 				var status = 3;
@@ -45,29 +113,35 @@ var EventTable = React.createClass({
 				if ( musicianInLineUp )
 					status = event.lineUp[musician.id].status;
 
+				var statusId = 'status-item-' + event.id + '-' + musician.id;
+
 				return (
-					<td className={statusClasses[status]}>
-						{statusIcons[status]}
-					</td>
+					<StatusItem
+						key={statusId}
+						id={statusId}
+						status={status}
+					/>
 				);
 			});
 
-			columns.unshift(<th>{musician.name} [{musician.instrument}]</th>);
-
-			return (
-				<tr>
-					{columns}
-				</tr>
+			columns.unshift(
+				<MusicianItem
+					key={'musician-item-' + musician.id}
+					name={musician.name}
+					instrument={musician.instrument}
+				/>
 			);
-		 });
+
+			return ( <tr key={'row-' + i}>{columns}</tr> );
+		});
 
 		var eventTitlesRow = sortedEvents.map( (event) => {
 			return (
-				<th>
-					{event.title}
-					<br />
-					{event.date}
-				</th>
+				<EventItem
+					key={'event-item-' + event.id}
+					title={event.title}
+					date={event.date}
+				/>
 			);
 		});
 
@@ -112,7 +186,7 @@ var AddMusicianPopup = React.createClass({
 	},
 	addMusician( event ) {
 		dataStore.musicians.push({
-			id: nextId++,
+			id: getNextMusicianId(),
 			name: this.state.name,
 			instrument: this.state.instrument
 		});
@@ -123,8 +197,6 @@ var AddMusicianPopup = React.createClass({
 		this.setState({instrument: ''});
 
 		sendData(dataStore, function(err, response) {
-			log('Done update remote DB', err, response);
-
 			if (err) {
 				// reload from server
 				getData( (err, response) => {
@@ -203,6 +275,7 @@ var AddEventPopup = React.createClass({
 	},
 	addEvent( event ) {
 		dataStore.events.push({
+			id: getNextEventId(),
 			title: this.state.title,
 			date: this.state.date,
 			lineUp: {}
@@ -213,8 +286,6 @@ var AddEventPopup = React.createClass({
 		this.setState(this.getInitialState());
 
 		sendData(dataStore, function(err, response) {
-			log('Done update remote DB', err, response);
-
 			if (err) {
 				// reload from server
 				getData( (err, response) => {
@@ -268,7 +339,6 @@ var AddEventPopup = React.createClass({
 
 var AddMusicianButton = React.createClass({
 	handleClick(){
-		console.log('Clicked AddMusicianButton');
 		showAddMusicianPopup = !showAddMusicianPopup;
 		updateApp();
 	},
@@ -324,11 +394,8 @@ function getData(cb) {
 		var responseData = null,
 		    error        = null;
 
-		log('responseText:', event.target.responseText);
-
 		try{
 			responseData = JSON.parse(event.target.responseText);
-			log('parsed data:', responseData);
 		} catch( e ) {
 			error = e;
 		}
@@ -379,9 +446,6 @@ getData( (err, response) => {
 		alert('An ERROR occured:\n' + err);
 	} else {
 		// update local store
-		log('Some text');
-		// response = JSON.parse(response);
-		log('OnLoad Response:', response );
 		dataStore = response;
 		updateApp();
 	}

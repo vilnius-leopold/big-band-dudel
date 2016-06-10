@@ -11,10 +11,8 @@ const jsonParser = bodyParser.json();
 var dataStore = JSON.parse(fs.readFileSync('db/data.json', 'utf8'));
 
 app.post('/data', jsonParser, (req, res) => {
-	log('body', req.body);
-
 	dataStore = req.body;
-	fs.writeFileSync( 'db/data.json', JSON.stringify(req.body), 'utf8' );
+	fs.writeFileSync( 'db/data.json', JSON.stringify(req.body, null, 3), 'utf8' );
 
 	res.json(req.body);
 });
