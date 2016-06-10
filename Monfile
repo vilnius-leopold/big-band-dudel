@@ -1,0 +1,43 @@
+{
+	"tasks": {
+		"server": {
+			"cmd": "node server.js"
+		},
+		"babel": {
+			"cmd": "./node_modules/.bin/babel --presets es2015,react jsx/main.jsx -o public/main.js"
+		},
+		"lr-server": {
+			"cmd": "./node_modules/.bin/tiny-lr",
+			"mute": true
+		},
+		"livereload": {
+			"cmd": "curl http://localhost:35729/changed?files=index.html",
+			"mute": true
+		}
+	},
+	"oneOff": [
+		"lr-server",
+		"babel",
+		"server"
+	],
+	"fileChangeActions": [
+		{
+			"files": [
+				"jsx/**/*"
+			],
+			"task": "babel"
+		},
+		{
+			"files": [
+				"public/**/*"
+			],
+			"task": "livereload"
+		},
+		{
+			"files": [
+				"server.js"
+			],
+			"task": "server"
+		}
+	]
+}
