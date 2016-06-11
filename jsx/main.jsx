@@ -4,8 +4,6 @@ const log = console.log.bind(console);
 
 var dataStore = null;
 
-var nextId = 4;
-
 function getNextEventId() {
 	var nextEventId = 0;
 
@@ -36,7 +34,7 @@ var statusIcons = {
 	0: '✗',
 	1: '✓',
 	2: '?',
-	3: ''
+	3: '-'
 };
 
 var statusClasses = {
@@ -48,21 +46,61 @@ var statusClasses = {
 
 var showAddMusicianPopup = false;
 var showAddEventPopup    = false;
+var editMode             = false;
 
 
 var MusicianItem = React.createClass({
+	handleClick() {
+		var index = dataStore.musicians.findIndex( (m) => {
+			return m.id === this.props.musicianId;
+		});
+
+		dataStore.musicians.splice(index, 1);
+
+		dataStore.events.forEach( (e) => {
+			if ( e.lineUp[this.props.musicianId] )
+				delete e.lineUp[this.props.musicianId];
+		});
+
+		updateApp();
+		updateRemoteStore()
+	},
 	render() {
 		return (
-			<th>{this.props.name} [{this.props.instrument}]</th>
+			<th>
+				{this.props.name} [{this.props.instrument}]
+				&nbsp;
+				<span
+					className={"remove-button glyphicon glyphicon-trash" + (editMode ? "" : " invisible")}
+					aria-hidden="true"
+					onClick={this.handleClick}
+				></span>
+			</th>
 		);
 	}
 });
 
 var EventItem = React.createClass({
+	handleClick() {
+		var index = dataStore.events.findIndex( (e) => {
+			return e.id === this.props.eventId;
+		});
+
+		dataStore.events.splice(index, 1);
+
+		updateApp();
+		updateRemoteStore()
+	},
 	render() {
 		return (
 			<th>
 				{this.props.title}
+				&nbsp;<span
+					className={"remove-button glyphicon glyphicon-trash" + (editMode ? "" : " invisible")}
+					aria-hidden="true"
+					onClick={this.handleClick}
+				></span>
+
 				<br />
 				{this.props.date}
 			</th>
@@ -70,19 +108,40 @@ var EventItem = React.createClass({
 	}
 });
 
+function getNextStatus(currentStatus) {
+	if ( currentStatus === 3 )
+		return 0;
+
+	return currentStatus + 1;
+}
+
+
 var StatusItem = React.createClass({
 	handleClick() {
-		log('Clicked statusItem!');
-		$('#' + this.props.id).popover({
-			html: this.props.id
+		if ( ! editMode )
+			return;
+
+		var clickedEvent = dataStore.events.find( (e) => {
+			return e.id === this.props.eventId;
 		});
-		log('Clicked statusItem!', this.props.id);
+
+		var clickedMember = clickedEvent.lineUp[this.props.musicianId];
+
+		if ( ! clickedMember ) {
+			clickedEvent.lineUp[this.props.musicianId] = {status: 3};
+			clickedMember = clickedEvent.lineUp[this.props.musicianId]
+		}
+
+		clickedMember.status = getNextStatus(clickedMember.status);
+
+		updateApp();
+		updateRemoteStore()
 	},
 	render() {
 		return (
 			<td
 				id={this.props.id}
-				className={statusClasses[this.props.status]}
+				className={"status-item " + statusClasses[this.props.status]}
 				onClick={this.handleClick}
 			>
 				{statusIcons[this.props.status]}
@@ -119,6 +178,8 @@ var EventTable = React.createClass({
 					<StatusItem
 						key={statusId}
 						id={statusId}
+						musicianId={musician.id}
+						eventId={event.id}
 						status={status}
 					/>
 				);
@@ -128,11 +189,12 @@ var EventTable = React.createClass({
 				<MusicianItem
 					key={'musician-item-' + musician.id}
 					name={musician.name}
+					musicianId={musician.id}
 					instrument={musician.instrument}
 				/>
 			);
 
-			return ( <tr key={'row-' + i}>{columns}</tr> );
+			return ( <tr key={'row-' + (i + 1)}>{columns}</tr> );
 		});
 
 		var eventTitlesRow = sortedEvents.map( (event) => {
@@ -140,19 +202,21 @@ var EventTable = React.createClass({
 				<EventItem
 					key={'event-item-' + event.id}
 					title={event.title}
+					eventId={event.id}
 					date={event.date}
 				/>
 			);
 		});
 
-		eventTitlesRow.unshift(<th></th>);
+		eventTitlesRow.unshift(<th key="corner-element"></th>);
 
-		rows.unshift(eventTitlesRow);
-
+		rows.unshift(<tr key={'row-' + 0}>{eventTitlesRow}</tr>);
 
 		return (
-			<table className="table">
-				{rows}
+			<table className="table table-bordered">
+				<tbody>
+					{rows}
+				</tbody>
 			</table>
 		);
 	}
@@ -371,20 +435,68 @@ var AddEventButton = React.createClass({
 	}
 });
 
+var ToggleEditButton = React.createClass({
+	handleClick(){
+		editMode = ! editMode;
+		updateApp();
+	},
+	render() {
+		return (
+			<button
+				className={"btn btn-default pull-right" + (editMode ? " active" : "")}
+				onClick={this.handleClick}
+			>
+				<span className="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+				&nbsp;{editMode ? "Exit Edit Mode" : "Enter Edit Mode"}
+			</button>
+		);
+	}
+});
+
 function updateApp() {
 	ReactDOM.render(
 		<div className="container">
 			<h1>Big Band Dudle</h1>
-			<div>
-				<AddMusicianButton/>
-				<AddEventButton/>
+			<div className={"alert alert-success" + (editMode ? "" : " invisible")}>
+				<span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+				&nbsp;You are currently in <strong>Edit Mode</strong>
 			</div>
+			<div className="clearfix">
+				<AddMusicianButton/>&nbsp;
+				<AddEventButton/>
+				<ToggleEditButton/>
+			</div>
+			<br/>
 			<EventTable events={dataStore.events} musicians={dataStore.musicians}/>
 			<AddMusicianPopup show={showAddMusicianPopup}/>
 			<AddEventPopup show={showAddEventPopup}/>
 		</div>,
 		document.getElementById('app')
 	);
+}
+
+function updateRemoteStore() {
+	sendData(dataStore, function(err, response) {
+		if (err) {
+			// reload from server
+			getData( (err, response) => {
+				if (err) {
+					alert('An ERROR occured:\n' + e);
+				} else {
+					// update local store
+					dataStore = response;
+					updateApp();
+				}
+			});
+
+			alert('An ERROR occured:\n' + e);
+		} else {
+			// update local store
+			dataStore = response;
+			updateApp();
+		}
+
+	});
 }
 
 function getData(cb) {
