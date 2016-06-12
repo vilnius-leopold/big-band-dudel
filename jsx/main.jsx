@@ -473,6 +473,9 @@ function updateApp() {
 			<EventTable events={dataStore.events} musicians={dataStore.musicians}/>
 			<AddMusicianPopup show={showAddMusicianPopup}/>
 			<AddEventPopup show={showAddEventPopup}/>
+			<footer>
+				<a href="https://github.com/vilnius-leopold/big-band-dudel">GitHub Repository</a>
+			</footer>
 		</div>,
 		document.getElementById('app')
 	);
