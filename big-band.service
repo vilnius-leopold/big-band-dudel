@@ -1,0 +1,10 @@
+[Unit]
+Description=Start big band dudel web-server
+
+[Service]
+Type=forking
+ExecStart=/root/run.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
