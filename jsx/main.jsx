@@ -1,8 +1,11 @@
 'use strict';
 
+const ReactDOM = require('react-dom');
+const React = require('react');
+
 const log = console.log.bind(console);
 
-var dataStore = null;
+// var dataStore = null;
 
 function getNextEventId() {
 	var nextEventId = 0;
@@ -456,7 +459,7 @@ var ToggleEditButton = React.createClass({
 function updateApp() {
 	ReactDOM.render(
 		<div className="container">
-			<h1>Big Band Dudle</h1>
+			<h1>Big Band Dudel</h1>
 			<div className={"alert alert-success" + (editMode ? "" : " invisible")}>
 				<span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
 				&nbsp;You are currently in <strong>Edit Mode</strong>
@@ -548,17 +551,19 @@ function sendData(data, cb) {
 
 	XHR.open('POST', '/data');
 
-	XHR.setRequestHeader('Content-Type','application/json');
+	XHR.setRequestHeader('Content-Type','text/plain');
 
 	XHR.send( JSON.stringify(data) );
 }
 
-getData( (err, response) => {
-	if (err) {
-		alert('An ERROR occured:\n' + err);
-	} else {
-		// update local store
-		dataStore = response;
-		updateApp();
-	}
-});
+// getData( (err, response) => {
+// 	if (err) {
+// 		alert('An ERROR occured:\n' + err);
+// 	} else {
+// 		// update local store
+// 		dataStore = response;
+// 		updateApp();
+// 	}
+// });
+
+updateApp();

@@ -3,8 +3,11 @@
 		"server": {
 			"cmd": "node server.js"
 		},
-		"babel": {
-			"cmd": "./node_modules/.bin/babel --presets es2015,react jsx/main.jsx -o public/main.js"
+		"babelify": {
+			"cmd": "./node_modules/.bin/browserify jsx/main.jsx -o public/main.js -t [ babelify --presets [ es2015 react ] ]"
+		},
+		"stylus": {
+			"cmd": "./node_modules/.bin/stylus --compress --include public/css --include-css < styles/main.styl > public/main.css"
 		},
 		"lr-server": {
 			"cmd": "./node_modules/.bin/tiny-lr",
@@ -12,12 +15,14 @@
 		},
 		"livereload": {
 			"cmd": "curl http://localhost:35729/changed?files=index.html",
-			"mute": true
+			"mute": true,
+			"waitFor": ["stylus", "babelify"]
 		}
 	},
 	"oneOff": [
 		"lr-server",
-		"babel",
+		"babelify",
+		"stylus",
 		"server"
 	],
 	"fileChangeActions": [
@@ -25,10 +30,17 @@
 			"files": [
 				"jsx/**/*"
 			],
-			"task": "babel"
+			"task": "babelify"
 		},
 		{
 			"files": [
+				"styles/**/*"
+			],
+			"task": "stylus"
+		},
+		{
+			"files": [
+				"views/**/*",
 				"public/**/*"
 			],
 			"task": "livereload"

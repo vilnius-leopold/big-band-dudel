@@ -1,27 +1,36 @@
 const log = console.log.bind(console);
 
 const fs = require('fs');
-
+const compression = require('compression');
 const express    = require('express');
 const bodyParser = require('body-parser');
 
 const app        = express();
-const jsonParser = bodyParser.json();
+const textParser = bodyParser.text();
 
 const port = process.env.NODE_ENV === 'production' ? 80 : 3000;
 
-var dataStore = JSON.parse(fs.readFileSync('db/data.json', 'utf8'));
+var jsonData = fs.readFileSync('db/data.json', 'utf8');
 
+app.set('views', './views')
+app.set('view engine', 'pug');
+app.use(compression());
 
-app.get('/data', (req, res) => {
-	res.json(dataStore);
+app.get('/', (req, res) => {
+	res.render('index', {initialData: jsonData});
 });
 
-app.post('/data', jsonParser, (req, res) => {
-	dataStore = req.body;
-	fs.writeFileSync( 'db/data.json', JSON.stringify(req.body, null, 3), 'utf8' );
+app.get('/data', (req, res) => {
+	res.setHeader('Content-Type', 'application/json');
+	res.send(jsonData);
+});
 
-	res.json(req.body);
+app.post('/data', textParser, (req, res) => {
+	jsonData = req.body;
+	fs.writeFileSync( 'db/data.json', jsonData, 'utf8' );
+
+	res.setHeader('Content-Type', 'application/json');
+	res.send(jsonData);
 });
 
 app.use(express.static(__dirname + '/public'));
