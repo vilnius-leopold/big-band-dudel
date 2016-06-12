@@ -12,8 +12,6 @@ const port = process.env.NODE_ENV === 'production' ? 80 : 3000;
 
 var jsonData = fs.readFileSync('db/data.json', 'utf8');
 
-console.log("jsonData", jsonData);
-
 app.set('views', './views')
 app.set('view engine', 'pug');
 app.use(compression());
