@@ -6,3 +6,4 @@ public/main.js
 *~
 
 *.pid
+server-ip.txt
