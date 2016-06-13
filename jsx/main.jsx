@@ -460,6 +460,16 @@ function updateApp() {
 	ReactDOM.render(
 		<div className="container">
 			<h1>Big Band Dudel</h1>
+			<div className="alert alert-info">
+				<span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+				&nbsp;Participate in improving the dudel by submitting
+				<ul>
+					<li>feature requests</li>
+					<li>bug reports</li>
+					<li>questions</li>
+				</ul>
+				on the <a href="https://github.com/vilnius-leopold/big-band-dudel/issues">GitHub issue tracker</a>.
+			</div>
 			<div className={"alert alert-success" + (editMode ? "" : " invisible")}>
 				<span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
 				&nbsp;You are currently in <strong>Edit Mode</strong>
