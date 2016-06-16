@@ -15,7 +15,6 @@ var Modal = React.createClass({
 		}
 	},
 	componentDidMount() {
-		console.log('Modal componentDidMount');
 		this.modalObj = $( this.refs.modal );
 
 		this.modalObj.modal({
@@ -45,10 +44,10 @@ var Modal = React.createClass({
 		this.setState({errorMessages: errorMessages});
 	},
 	render() {
-		var alerts = (this.state.errorMessages || []).map( (errorMessage) => {
+		var alerts = (this.state.errorMessages || []).map( (errorMessage, i) => {
 			return (
-				<div className={"alert alert-danger"}>
-					<span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+				<div key={i} className={"alert alert-danger"}>
+					<span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 					&nbsp;<span dangerouslySetInnerHTML={{__html: errorMessage}} />.
 				</div>
 			);

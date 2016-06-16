@@ -3,6 +3,7 @@
 const ReactDOM = require('react-dom');
 const React    = require('react');
 const $        = require('jquery');
+const moment   = require('moment');
 
 const eventEmitter       = require('./lib/event-emitter.js');
 var   dataStore          = require('./lib/dataStore.js').data;
@@ -99,7 +100,7 @@ var EventItem = React.createClass({
 				></span>
 
 				<br />
-				{this.props.date}
+				{moment(this.props.date).format("DD.MM.YYYY")}
 			</th>
 		);
 	}

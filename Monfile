@@ -4,7 +4,7 @@
 			"cmd": "node server.js"
 		},
 		"babelify": {
-			"cmd": "./node_modules/.bin/browserify jsx/main.jsx -o public/main.js --debug"
+			"cmd": "./node_modules/.bin/browserify jsx/main.jsx -o public/main.js"
 		},
 		"stylus": {
 			"cmd": "./node_modules/.bin/stylus --compress --include node_modules/bootstrap/dist/css --include-css < styles/main.styl > public/main.css"

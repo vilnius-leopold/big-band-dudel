@@ -98,10 +98,13 @@ function getNextId(listName) {
 	return nextMusicianId;
 }
 
-function addItem(listName, data) {
+function addItem(listName, data, sorter) {
 	data.id = getNextId(listName);
 
 	dataStore[listName].push(data);
+
+	if (sorter)
+		dataStore[listName].sort(sorter);
 
 	eventEmitter.emit('updateApp');
 
@@ -113,10 +116,19 @@ function addItem(listName, data) {
 module.exports = {
 	data: dataStore,
 	addMusician( data ) {
-		var id = addItem("musicians", data);
+		var id = addItem("musicians", data, (a,b) => {
+			if(a.name < b.name) return -1;
+			if(a.name > b.name) return 1;
+			return 0;
+		});
 	},
 	addInstrument( data ) {
 		var id = addItem("instruments", data);
 		eventEmitter.emit("instrumentAdded", id);
+	},
+	addEvent( data ) {
+		var id = addItem("events", data, (a,b) => {
+			return b.date - a.date;
+		});
 	}
 };
