@@ -1,11 +1,11 @@
 'use strict';
 
 const ReactDOM = require('react-dom');
-const React = require('react');
+const React    = require('react');
+
+const Modal = require('./components/modal.jsx');
 
 const log = console.log.bind(console);
-
-// var dataStore = null;
 
 function getNextEventId() {
 	var nextEventId = 0;
@@ -238,18 +238,10 @@ var AddMusicianPopup = React.createClass({
 	handleInstrumentChange: function(event) {
 		this.setState({instrument: event.target.value});
 	},
-	closePopup( event ) {
-		if (
-			event.target.id === "popup-overlay" ||
-			event.target.id === "popup-cancel-button" ||
-			event.target.id === "popup-close-button"
-		) {
-			showAddMusicianPopup = false;
-			updateApp();
-
-			this.setState({name: ''});
-			this.setState({instrument: ''});
-		}
+	handleClose( event ) {
+		showAddMusicianPopup = false;
+		updateApp();
+		this.setState({name: '', instrument: ''});
 	},
 	addMusician( event ) {
 		dataStore.musicians.push({
@@ -287,30 +279,33 @@ var AddMusicianPopup = React.createClass({
 	},
 	render() {
 		return (
-			<div id="popup-overlay" className={this.props.show ? '' : 'hidden'} onClick={this.closePopup}>
-				<div id="popup-container">
-					<button id="popup-close-button">✕</button>
-					<h3>Add musician</h3>
+			<Modal
+				show={this.props.show}
+				modalTitle="Add musician"
+				onConfirm={this.addMusician}
+				onClose={this.handleClose}
+			>
+				<div className="form-group">
 					<label>Name</label>
 					<input
 						type="text"
+						className="form-control"
 						placeholder="John Doe"
 						value={this.state.name}
 						onChange={this.handleNameChange}
 					/>
-					<br />
+				</div>
+				<div className="form-group">
 					<label>Instrument</label>
 					<input
 						type="text"
+						className="form-control"
 						placeholder="flute"
 						value={this.state.instrument}
 						onChange={this.handleInstrumentChange}
 					/>
-					<br />
-					<button className="btn btn-primary" onClick={this.addMusician}>Add</button>
-					<button id="popup-cancel-button" className="btn btn-default">Cancel</button>
 				</div>
-			</div>
+			</Modal>
 		);
 	}
 });
@@ -382,6 +377,7 @@ var AddEventPopup = React.createClass({
 					<h3>Add event</h3>
 					<label>Title</label>
 					<input
+						className="form-control"
 						type="text"
 						placeholder="Royal Albert Hall London"
 						value={this.state.title}
@@ -390,6 +386,7 @@ var AddEventPopup = React.createClass({
 					<br />
 					<label>Date</label>
 					<input
+						className="form-control"
 						type="text"
 						placeholder="dd/mm/yyyy"
 						value={this.state.date}
@@ -406,7 +403,7 @@ var AddEventPopup = React.createClass({
 
 var AddMusicianButton = React.createClass({
 	handleClick(){
-		showAddMusicianPopup = !showAddMusicianPopup;
+		showAddMusicianPopup = true;
 		updateApp();
 	},
 	render() {
@@ -423,7 +420,7 @@ var AddMusicianButton = React.createClass({
 
 var AddEventButton = React.createClass({
 	handleClick(){
-		showAddEventPopup = ! showAddEventPopup;
+		showAddEventPopup = true;
 		updateApp();
 	},
 	render() {

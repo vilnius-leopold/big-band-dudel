@@ -4,10 +4,10 @@
 			"cmd": "node server.js"
 		},
 		"babelify": {
-			"cmd": "./node_modules/.bin/browserify jsx/main.jsx -o public/main.js -t [ babelify --presets [ es2015 react ] ]"
+			"cmd": "./node_modules/.bin/browserify jsx/main.jsx -o public/main.js"
 		},
 		"stylus": {
-			"cmd": "./node_modules/.bin/stylus --compress --include public/css --include-css < styles/main.styl > public/main.css"
+			"cmd": "./node_modules/.bin/stylus --compress --include node_modules/bootstrap/dist/css --include-css < styles/main.styl > public/main.css"
 		},
 		"lr-server": {
 			"cmd": "./node_modules/.bin/tiny-lr",
@@ -28,7 +28,8 @@
 	"fileChangeActions": [
 		{
 			"files": [
-				"jsx/**/*"
+				"jsx/**/*",
+				"package.json"
 			],
 			"task": "babelify"
 		},

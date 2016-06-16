@@ -8,10 +8,30 @@
   },
   "author": "",
   "license": "ISC",
+  "browserify": {
+    "transform": [
+      "browserify-shim",
+      ["babelify", { "presets": ["es2015", "react"] }]
+    ]
+  },
+  "browser": {
+    "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js"
+  },
+  "browserify-shim": {
+    "bootstrap": {
+      "exports": "bootstrap",
+      "depends": [
+        "jquery:jQuery"
+      ]
+    }
+  },
   "dependencies": {
     "body-parser": "^1.15.1",
+    "bootstrap": "^3.3.6",
     "compression": "^1.6.2",
     "express": "^4.13.4",
+    "jquery": "^2.0.0",
+    "moment": "^2.13.0",
     "pug": "^2.0.0-beta3"
   },
   "devDependencies": {
@@ -19,6 +39,7 @@
     "babel-preset-react": "^6.5.0",
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
+    "browserify-shim": "^3.8.12",
     "make-livereload": "^0.1.2",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
