@@ -6,8 +6,8 @@ const $        = require('jquery');
 
 const eventEmitter       = require('./lib/event-emitter.js');
 var   dataStore          = require('./lib/dataStore.js').data;
-const Modal              = require('./components/modal.jsx');
 const AddMusicianPopup   = require('./components/add-musician-popup.jsx');
+const AddEventPopup   = require('./components/add-event-popup.jsx');
 const AddInstrumentPopup = require('./components/add-instrument-popup.jsx');
 
 
@@ -226,99 +226,8 @@ var EventTable = React.createClass({
 	}
 });
 
-var AddEventPopup = React.createClass({
-	getInitialState: function() {
-		return {
-			title       : '',
-			date : Date.now()
-		};
-	},
-	handleTitleChange: function(event) {
-		this.setState({title: event.target.value});
-	},
-	handleDateChange: function(event) {
-		this.setState({date: event.target.value});
-	},
-	closePopup( event ) {
-		if (
-			event.target.id === "popup-overlay" ||
-			event.target.id === "popup-cancel-button" ||
-			event.target.id === "popup-close-button"
-		) {
-			showAddEventPopup = false;
-			updateApp();
-
-			this.setState(this.getInitialState());
-		}
-	},
-	addEvent( event ) {
-		dataStore.events.push({
-			id: getNextId("events"),
-			title: this.state.title,
-			date: this.state.date,
-			lineUp: {}
-		});
-		showAddEventPopup = false;
-		updateApp();
-
-		this.setState(this.getInitialState());
-
-		sendData(dataStore, function(err, response) {
-			if (err) {
-				// reload from server
-				getData( (err, response) => {
-					if (err) {
-						alert('An ERROR occured:\n' + e);
-					} else {
-						// update local store
-						dataStore = response;
-						updateApp();
-					}
-				});
-
-				alert('An ERROR occured:\n' + e);
-			} else {
-				// update local store
-				dataStore = response;
-				updateApp();
-			}
-
-		});
-	},
-	render() {
-		return (
-			<div id="popup-overlay" className={this.props.show ? '' : 'hidden'} onClick={this.closePopup}>
-				<div id="popup-container">
-					<button id="popup-close-button">✕</button>
-					<h3>Add event</h3>
-					<label>Title</label>
-					<input
-						className="form-control"
-						type="text"
-						placeholder="Royal Albert Hall London"
-						value={this.state.title}
-						onChange={this.handleTitleChange}
-					/>
-					<br />
-					<label>Date</label>
-					<input
-						className="form-control"
-						type="text"
-						placeholder="dd/mm/yyyy"
-						value={this.state.date}
-						onChange={this.handleDateChange}
-					/>
-					<br />
-					<button className="btn btn-primary" onClick={this.addEvent}>Add</button>
-					<button id="popup-cancel-button" className="btn btn-default">Cancel</button>
-				</div>
-			</div>
-		);
-	}
-});
-
 var AddInstrumentButton = React.createClass({
-	handleClick(){
+	handleClick() {
 		eventEmitter.emit('openAddInstrumentPopup');
 	},
 	render() {
@@ -334,7 +243,7 @@ var AddInstrumentButton = React.createClass({
 });
 
 var AddMusicianButton = React.createClass({
-	handleClick(){
+	handleClick() {
 		eventEmitter.emit('openAddMusicianPopup');
 	},
 	render() {
@@ -350,9 +259,8 @@ var AddMusicianButton = React.createClass({
 });
 
 var AddEventButton = React.createClass({
-	handleClick(){
-		showAddEventPopup = true;
-		updateApp();
+	handleClick() {
+		eventEmitter.emit('openAddEventPopup');
 	},
 	render() {
 		return (
@@ -410,7 +318,7 @@ function updateApp() {
 			<br/>
 			<EventTable events={dataStore.events} musicians={dataStore.musicians}/>
 			<AddMusicianPopup/>
-			<AddEventPopup show={showAddEventPopup}/>
+			<AddEventPopup/>
 			<AddInstrumentPopup/>
 			<footer>
 				<a href="https://github.com/vilnius-leopold/big-band-dudel">GitHub Repository</a>
