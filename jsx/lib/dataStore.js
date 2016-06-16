@@ -17,7 +17,7 @@ function updateRemoteStore() {
 				} else {
 					// update local store
 					dataStore = response;
-					updateApp();
+					eventEmitter.emit('updateApp');
 				}
 			});
 
@@ -25,7 +25,7 @@ function updateRemoteStore() {
 		} else {
 			// update local store
 			dataStore = response;
-			updateApp();
+			eventEmitter.emit('updateApp');
 		}
 
 	});
@@ -98,35 +98,25 @@ function getNextId(listName) {
 	return nextMusicianId;
 }
 
+function addItem(listName, data) {
+	data.id = getNextId(listName);
+
+	dataStore[listName].push(data);
+
+	eventEmitter.emit('updateApp');
+
+	updateRemoteStore();
+
+	return data.id;
+}
+
 module.exports = {
 	data: dataStore,
 	addMusician( data ) {
-		data.id = getNextId("musicians");
-
-		dataStore.musicians.push(data);
-
-		eventEmitter.emit('updateApp');
-
-		sendData(dataStore, function(err, response) {
-			if (err) {
-				// reload from server
-				getData( (err, response) => {
-					if (err) {
-						alert('An ERROR occured:\n' + e);
-					} else {
-						// update local store
-						dataStore = response;
-						eventEmitter.emit('updateApp');
-					}
-				});
-
-				alert('An ERROR occured:\n' + e);
-			} else {
-				// update local store
-				dataStore = response;
-				eventEmitter.emit('updateApp');
-			}
-
-		});
+		var id = addItem("musicians", data);
+	},
+	addInstrument( data ) {
+		var id = addItem("instruments", data);
+		eventEmitter.emit("instrumentAdded", id);
 	}
 };

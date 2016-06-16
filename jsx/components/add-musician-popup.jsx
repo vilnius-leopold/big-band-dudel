@@ -29,8 +29,11 @@ var AddMusicianPopup = module.exports = React.createClass({
 		}
 	},
 	componentDidMount() {
-		eventEmitter.on('addInstrument', (instrumentId) => {
+		eventEmitter.on('instrumentAdded', (instrumentId) => {
 			this.setState({instrument: instrumentId});
+		});
+		eventEmitter.on('AddInstrumentPopup.close', () => {
+			this.refs.instrumentInput.focus();
 		});
 	},
 	addMusician( event ) {
@@ -79,9 +82,9 @@ var AddMusicianPopup = module.exports = React.createClass({
 		this.refs.nameInput.focus();
 	},
 	render() {
-		var options = dataStore.data.instruments.map( (instr) => {
+		var options = dataStore.data.instruments.map( (instr, i) => {
 			return (
-				<option value={instr.id}>{instr.name}</option>
+				<option key={i} value={instr.id}>{instr.name}</option>
 			);
 		});
 
@@ -107,16 +110,8 @@ var AddMusicianPopup = module.exports = React.createClass({
 				</div>
 				<div className="form-group">
 					<label>Instrument</label>
-					{/*
-					<input
-						type="text"
-						className="form-control"
-						placeholder="flute"
-						value={this.state.instrument}
-						onChange={this.handleInstrumentChange}
-					/>
-					*/}
 					<select
+						ref="instrumentInput"
 						className="form-control"
 						onChange={this.handleInstrumentChange}
 						value={this.state.instrument}

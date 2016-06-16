@@ -4,10 +4,11 @@ const ReactDOM = require('react-dom');
 const React    = require('react');
 const $        = require('jquery');
 
-const eventEmitter     = require('./lib/event-emitter.js');
-var   dataStore        = require('./lib/dataStore.js').data;
-const Modal            = require('./components/modal.jsx');
-const AddMusicianPopup = require('./components/add-musician-popup.jsx');
+const eventEmitter       = require('./lib/event-emitter.js');
+var   dataStore          = require('./lib/dataStore.js').data;
+const Modal              = require('./components/modal.jsx');
+const AddMusicianPopup   = require('./components/add-musician-popup.jsx');
+const AddInstrumentPopup = require('./components/add-instrument-popup.jsx');
 
 
 eventEmitter.on('updateApp', updateApp);
@@ -316,6 +317,22 @@ var AddEventPopup = React.createClass({
 	}
 });
 
+var AddInstrumentButton = React.createClass({
+	handleClick(){
+		eventEmitter.emit('openAddInstrumentPopup');
+	},
+	render() {
+		return (
+			<button
+				className="btn btn-default"
+				onClick={this.handleClick}
+			>
+				Add new instrument
+			</button>
+		);
+	}
+});
+
 var AddMusicianButton = React.createClass({
 	handleClick(){
 		eventEmitter.emit('openAddMusicianPopup');
@@ -394,6 +411,7 @@ function updateApp() {
 			<EventTable events={dataStore.events} musicians={dataStore.musicians}/>
 			<AddMusicianPopup/>
 			<AddEventPopup show={showAddEventPopup}/>
+			<AddInstrumentPopup/>
 			<footer>
 				<a href="https://github.com/vilnius-leopold/big-band-dudel">GitHub Repository</a>
 			</footer>
