@@ -9,7 +9,7 @@ function getNextStatus(currentStatus) {
 	return currentStatus + 1;
 }
 
-var StatusItem = React.createClass({
+var StatusItem = module.exports = React.createClass({
 	handleClick() {
 		if ( ! this.props.editMode )
 			return;

@@ -81,7 +81,7 @@ var ToggleEditButton = React.createClass({
 var App = React.createClass({
 	getInitialState() {
 		return {
-			persistentData: dataStore.data
+			persistentData: dataStore.data,
 			volatileData: {
 				editMode: false
 			}
@@ -130,6 +130,7 @@ var App = React.createClass({
 					musicians={this.state.persistentData.musicians}
 					instruments={this.state.persistentData.instruments}
 				/>
+			{/*
 				<AddMusicianPopup
 					instruments={this.state.persistentData.instruments}
 					musicians={this.state.persistentData.musicians}
@@ -143,6 +144,7 @@ var App = React.createClass({
 				<footer>
 					<a href="https://github.com/vilnius-leopold/big-band-dudel">GitHub Repository</a>
 				</footer>
+			*/}
 			</div>
 		);
 	}

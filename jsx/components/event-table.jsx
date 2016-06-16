@@ -5,7 +5,6 @@ const StatusItem   = require('./table-items/status-item.jsx');
 const MusicianItem = require('./table-items/musician-item.jsx');
 const EventItem    = require('./table-items/event-item.jsx');
 
-
 var EventTable = module.exports = React.createClass({
 	render() {
 		var rows = this.props.musicians.map( (musician, i) => {
@@ -22,7 +21,7 @@ var EventTable = module.exports = React.createClass({
 					<StatusItem
 						key={statusId}
 						id={statusId}
-						editMode{this.props.editMode}
+						editMode={this.props.editMode}
 						musicianId={musician.id}
 						eventId={event.id}
 						status={status}
@@ -32,7 +31,7 @@ var EventTable = module.exports = React.createClass({
 
 
 			var instrumentName = "";
-			var instrumentData = this.props.persistentData.instruments.find( instr => instr.id === musician.instrumentId);
+			var instrumentData = this.props.instruments.find( instr => instr.id === musician.instrumentId);
 
 			if (instrumentData)
 				instrumentName = instrumentData.name;
@@ -40,7 +39,7 @@ var EventTable = module.exports = React.createClass({
 			columns.unshift(
 				<MusicianItem
 					key={'musician-item-' + musician.id}
-					editMode{this.props.editMode}
+					editMode={this.props.editMode}
 					name={musician.name}
 					musicianId={musician.id}
 					instrument={instrumentName}
@@ -50,11 +49,11 @@ var EventTable = module.exports = React.createClass({
 			return ( <tr key={'row-' + (i + 1)}>{columns}</tr> );
 		});
 
-		var eventTitlesRow = sortedEvents.map( (event) => {
+		var eventTitlesRow = this.props.events.map( (event) => {
 			return (
 				<EventItem
 					key={'event-item-' + event.id}
-					editMode{this.props.editMode}
+					editMode={this.props.editMode}
 					title={event.title}
 					eventId={event.id}
 					date={event.date}
@@ -73,5 +72,10 @@ var EventTable = module.exports = React.createClass({
 				</tbody>
 			</table>
 		);
+
+		// return (
+		// 	<table className="table table-bordered">
+		// 	</table>
+		// );
 	}
 });
