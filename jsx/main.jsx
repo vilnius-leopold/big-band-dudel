@@ -4,29 +4,20 @@ const ReactDOM = require('react-dom');
 const React    = require('react');
 const $        = require('jquery');
 
-const eventEmitter = require('./lib/event-emitter.js');
-const Modal        = require('./components/modal.jsx');
+const eventEmitter     = require('./lib/event-emitter.js');
+var   dataStore        = require('./lib/dataStore.js').data;
+const Modal            = require('./components/modal.jsx');
+const AddMusicianPopup = require('./components/add-musician-popup.jsx');
 
+
+eventEmitter.on('updateApp', updateApp);
 
 const log = console.log.bind(console);
 
-function getNextEventId() {
-	var nextEventId = 0;
-
-	dataStore.events.forEach( (e) => {
-		if ( e.id > nextEventId )
-			nextEventId = e.id;
-	});
-
-	nextEventId++;
-
-	return nextEventId;
-}
-
-function getNextMusicianId() {
+function getNextId(listName) {
 	var nextMusicianId = 0;
 
-	dataStore.musicians.forEach( (m) => {
+	dataStore[listName].forEach( (m) => {
 		if ( m.id > nextMusicianId )
 			nextMusicianId = m.id;
 	});
@@ -50,7 +41,6 @@ var statusClasses = {
 	3: ''
 };
 
-var showAddMusicianPopup = false;
 var showAddEventPopup    = false;
 var editMode             = false;
 
@@ -191,12 +181,19 @@ var EventTable = React.createClass({
 				);
 			});
 
+
+			var instrumentName = "";
+			var instrumentData = dataStore.instruments.find( instr => instr.id === musician.instrumentId);
+
+			if (instrumentData)
+				instrumentName = instrumentData.name;
+
 			columns.unshift(
 				<MusicianItem
 					key={'musician-item-' + musician.id}
 					name={musician.name}
 					musicianId={musician.id}
-					instrument={musician.instrument}
+					instrument={instrumentName}
 				/>
 			);
 
@@ -228,124 +225,6 @@ var EventTable = React.createClass({
 	}
 });
 
-var AddMusicianPopup = React.createClass({
-	getInitialState: function() {
-		return {
-			name       : '',
-			instrument : ''
-		};
-	},
-	handleNameChange: function(event) {
-		this.setState({name: event.target.value});
-	},
-	handleInstrumentChange: function(event) {
-		this.setState({instrument: event.target.value});
-	},
-	addMusician( event ) {
-		var validationErrors = [];
-
-		// validate Name
-		var trimmedName = this.state.name.trim();
-
-		if (trimmedName === '') {
-			validationErrors.push("User name can not be empty");
-		} else {
-			var index = dataStore.musicians.findIndex( (m) => {
-				if (m.name === trimmedName)
-					return true;
-
-				return false;
-			});
-
-			if ( index !== -1)
-				validationErrors.push("User <strong>"+trimmedName+"</strong> already exists");
-		}
-
-		// validate Name
-
-		if (this.state.instrument === '') {
-			validationErrors.push("You must select an instrument");
-		}
-
-		if ( validationErrors.length )
-			return validationErrors;
-
-
-		dataStore.musicians.push({
-			id: getNextMusicianId(),
-			name: trimmedName,
-			instrument: this.state.instrument
-		});
-
-		updateApp();
-
-		sendData(dataStore, function(err, response) {
-			if (err) {
-				// reload from server
-				getData( (err, response) => {
-					if (err) {
-						alert('An ERROR occured:\n' + e);
-					} else {
-						// update local store
-						dataStore = response;
-						updateApp();
-					}
-				});
-
-				alert('An ERROR occured:\n' + e);
-			} else {
-				// update local store
-				dataStore = response;
-				updateApp();
-			}
-
-		});
-
-		return null;
-	},
-	clearInputs() {
-		this.setState({name: '', instrument: ''});
-	},
-	focusNameInput() {
-		console.log('Modal shown event!');
-		this.refs.nameInput.focus();
-	},
-	render() {
-		return (
-			<Modal
-				modalTitle="Add musician"
-				triggerEvent="openAddMusicianPopup"
-				onShow={this.clearInputs}
-				onShown={this.focusNameInput}
-				onConfirm={this.addMusician}
-			>
-				<div className="form-group">
-					<label>Name</label>
-					<input
-						ref="nameInput"
-						autoFocus
-						type="text"
-						className="form-control"
-						placeholder="John Doe"
-						value={this.state.name}
-						onChange={this.handleNameChange}
-					/>
-				</div>
-				<div className="form-group">
-					<label>Instrument</label>
-					<input
-						type="text"
-						className="form-control"
-						placeholder="flute"
-						value={this.state.instrument}
-						onChange={this.handleInstrumentChange}
-					/>
-				</div>
-			</Modal>
-		);
-	}
-});
-
 var AddEventPopup = React.createClass({
 	getInitialState: function() {
 		return {
@@ -373,7 +252,7 @@ var AddEventPopup = React.createClass({
 	},
 	addEvent( event ) {
 		dataStore.events.push({
-			id: getNextEventId(),
+			id: getNextId("events"),
 			title: this.state.title,
 			date: this.state.date,
 			lineUp: {}
@@ -513,7 +392,7 @@ function updateApp() {
 			</div>
 			<br/>
 			<EventTable events={dataStore.events} musicians={dataStore.musicians}/>
-			<AddMusicianPopup show={showAddMusicianPopup}/>
+			<AddMusicianPopup/>
 			<AddEventPopup show={showAddEventPopup}/>
 			<footer>
 				<a href="https://github.com/vilnius-leopold/big-band-dudel">GitHub Repository</a>
