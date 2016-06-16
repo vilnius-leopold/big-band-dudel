@@ -2,8 +2,11 @@
 
 const ReactDOM = require('react-dom');
 const React    = require('react');
+const $        = require('jquery');
 
-const Modal = require('./components/modal.jsx');
+const eventEmitter = require('./lib/event-emitter.js');
+const Modal        = require('./components/modal.jsx');
+
 
 const log = console.log.bind(console);
 
@@ -238,22 +241,43 @@ var AddMusicianPopup = React.createClass({
 	handleInstrumentChange: function(event) {
 		this.setState({instrument: event.target.value});
 	},
-	handleClose( event ) {
-		showAddMusicianPopup = false;
-		updateApp();
-		this.setState({name: '', instrument: ''});
-	},
 	addMusician( event ) {
+		var validationErrors = [];
+
+		// validate Name
+		var trimmedName = this.state.name.trim();
+
+		if (trimmedName === '') {
+			validationErrors.push("User name can not be empty");
+		} else {
+			var index = dataStore.musicians.findIndex( (m) => {
+				if (m.name === trimmedName)
+					return true;
+
+				return false;
+			});
+
+			if ( index !== -1)
+				validationErrors.push("User <strong>"+trimmedName+"</strong> already exists");
+		}
+
+		// validate Name
+
+		if (this.state.instrument === '') {
+			validationErrors.push("You must select an instrument");
+		}
+
+		if ( validationErrors.length )
+			return validationErrors;
+
+
 		dataStore.musicians.push({
 			id: getNextMusicianId(),
-			name: this.state.name,
+			name: trimmedName,
 			instrument: this.state.instrument
 		});
-		showAddMusicianPopup = false;
-		updateApp();
 
-		this.setState({name: ''});
-		this.setState({instrument: ''});
+		updateApp();
 
 		sendData(dataStore, function(err, response) {
 			if (err) {
@@ -276,18 +300,30 @@ var AddMusicianPopup = React.createClass({
 			}
 
 		});
+
+		return null;
+	},
+	clearInputs() {
+		this.setState({name: '', instrument: ''});
+	},
+	focusNameInput() {
+		console.log('Modal shown event!');
+		this.refs.nameInput.focus();
 	},
 	render() {
 		return (
 			<Modal
-				show={this.props.show}
 				modalTitle="Add musician"
+				triggerEvent="openAddMusicianPopup"
+				onShow={this.clearInputs}
+				onShown={this.focusNameInput}
 				onConfirm={this.addMusician}
-				onClose={this.handleClose}
 			>
 				<div className="form-group">
 					<label>Name</label>
 					<input
+						ref="nameInput"
+						autoFocus
 						type="text"
 						className="form-control"
 						placeholder="John Doe"
@@ -403,8 +439,7 @@ var AddEventPopup = React.createClass({
 
 var AddMusicianButton = React.createClass({
 	handleClick(){
-		showAddMusicianPopup = true;
-		updateApp();
+		eventEmitter.emit('openAddMusicianPopup');
 	},
 	render() {
 		return (
