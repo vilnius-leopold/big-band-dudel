@@ -19,7 +19,7 @@ dist: clean build
 	cp package.json dist/
 	cp big-band.service dist/
 
-deploy: build
+deploy: dist
 	ssh $(REMOTE_HOST) "systemctl disable --now big-band.service || true"
 	ssh $(REMOTE_HOST) "rm /etc/systemd/system/big-band.service || true"
 	ssh $(REMOTE_HOST) "rm -rf dist/ || true"
