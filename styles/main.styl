@@ -90,12 +90,17 @@ main-height     = 500px
 		position: absolute
 		left: 0
 		top: 0
-		width: 1400px
+		// width: 5000px
 		height: header-height
 		background: white
+		white-space: nowrap;
+		// overflow-x:auto;
+		// overflow-y:hidden;
 
 		.event-item
 			width: event-width
+			display: inline-block;
+			white-space: initial;
 
 	#musician-sidebar
 		z-index: 400
@@ -125,9 +130,16 @@ main-height     = 500px
 			overflow: scroll
 
 			#table-content
-				width: 1200px
+				// width: 1200px
+				white-space: nowrap;
+				// overflow-x:auto;
+				// overflow-y:hidden;
 
-				.status-item
-					height: musician-height
+				.status-column
+					display: inline-block;
 					width: event-width
+
+					.status-item
+						height: musician-height
+						width: event-width
 

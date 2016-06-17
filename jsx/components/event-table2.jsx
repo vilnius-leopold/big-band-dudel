@@ -12,7 +12,6 @@ var EventTable = module.exports = React.createClass({
 
 		this.refs.tableScrollPane.addEventListener('scroll', (event) => {
 			var target = event.target;
-			// console.log('scroll', event.target.scrollTop, event.target.scrollLeft);
 
 			musicianSidebar.style.top = -target.scrollTop + 'px';
 			eventHeader.style.left    = -target.scrollLeft + 'px';
@@ -22,7 +21,7 @@ var EventTable = module.exports = React.createClass({
 		var events = this.props.events.map( (event) => {
 			return (
 				<div
-					className="event-item pull-left"
+					className="event-item"
 					key={'event-item-' + event.id}
 				>
 					{event.title}
@@ -54,9 +53,6 @@ var EventTable = module.exports = React.createClass({
 				var status  = (event.lineUp[musician.id] || {status:  3}).status,
 				    keyName = 'status-item-' + event.id + '-' + musician.id;
 
-				console.log(status);
-				console.log(event.id, musician.id);
-
 				return (
 					<div
 						className="status-item"
@@ -70,7 +66,7 @@ var EventTable = module.exports = React.createClass({
 
 			return (
 				<div
-					className="status-column pull-left"
+					className="status-column"
 					key={"status-column-" + event.id}
 				>
 					{statusItems}
@@ -81,7 +77,7 @@ var EventTable = module.exports = React.createClass({
 		return (
 			<div id="event-table">
 				<div id="table-corner"/>
-				<div ref="eventHeader" id="event-header" className="clearfix">
+				<div ref="eventHeader" id="event-header" className="">
 					{events}
 				</div>
 				<div ref="musicianSidebar" id="musician-sidebar">
@@ -89,7 +85,7 @@ var EventTable = module.exports = React.createClass({
 				</div>
 				<div id="table-content-wrapper">
 					<div ref="tableScrollPane" id="table-scroll-pane">
-						<div id="table-content" className="clearfix">
+						<div id="table-content" className="">
 							{statusColumns}
 						</div>
 					</div>
