@@ -67,7 +67,7 @@ main-height     = 500px
 	border: 1px solid #ddd
 	overflow: hidden
 	height: main-height
-	width: main-width
+	// width: main-width
 
 	>div
 	>div>div
@@ -110,18 +110,24 @@ main-height     = 500px
 
 	#table-content-wrapper
 		position: absolute
-		top: header-height
-		left: sidebar-width
-		width: 600px
-		height: 400px
-		overflow: scroll
+		top: 0
+		left: 0
+		padding-left: 200px
+		padding-top:  100px
+		width: 100%
+		height: 100%
 		// overflow-y: scroll
 		// overflow-x: hidden
 
-		#table-content
-			width: 1200px
+		#table-scroll-pane
+			width: 100%
+			height: 100%
+			overflow: scroll
 
-			.status-item
-				height: musician-height
-				width: event-width
+			#table-content
+				width: 1200px
+
+				.status-item
+					height: musician-height
+					width: event-width
 

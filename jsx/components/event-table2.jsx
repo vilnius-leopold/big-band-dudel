@@ -10,7 +10,7 @@ var EventTable = module.exports = React.createClass({
 		var musicianSidebar = this.refs.musicianSidebar;
 		var eventHeader = this.refs.eventHeader;
 
-		this.refs.tableContentWrapper.addEventListener('scroll', (event) => {
+		this.refs.tableScrollPane.addEventListener('scroll', (event) => {
 			var target = event.target;
 			// console.log('scroll', event.target.scrollTop, event.target.scrollLeft);
 
@@ -87,9 +87,11 @@ var EventTable = module.exports = React.createClass({
 				<div ref="musicianSidebar" id="musician-sidebar">
 					{musicians}
 				</div>
-				<div ref="tableContentWrapper" id="table-content-wrapper">
-					<div id="table-content" className="clearfix">
-						{statusColumns}
+				<div id="table-content-wrapper">
+					<div ref="tableScrollPane" id="table-scroll-pane">
+						<div id="table-content" className="clearfix">
+							{statusColumns}
+						</div>
 					</div>
 				</div>
 			</div>
