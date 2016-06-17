@@ -3,6 +3,7 @@ node_modules/
 db/data.json
 public/main.js
 public/main.css
+dist/
 
 *~
 

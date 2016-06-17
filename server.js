@@ -8,9 +8,12 @@ const bodyParser = require('body-parser');
 const app        = express();
 const textParser = bodyParser.text();
 
-const port = process.env.NODE_ENV === 'production' ? 80 : 3000;
+const isProduction = process.env.NODE_ENV === 'production';
 
-var jsonData = fs.readFileSync('db/data.json', 'utf8');
+const port = isProduction ? 80 : 3000;
+const dbFile = isProduction ? '../db/data.json' : 'db/data.json';
+
+var jsonData = fs.readFileSync(dbFile, 'utf8');
 
 app.set('views', './views')
 app.set('view engine', 'pug');
@@ -27,7 +30,7 @@ app.get('/data', (req, res) => {
 
 app.post('/data', textParser, (req, res) => {
 	jsonData = req.body;
-	fs.writeFileSync( 'db/data.json', jsonData, 'utf8' );
+	fs.writeFileSync( dbFile, jsonData, 'utf8' );
 
 	res.setHeader('Content-Type', 'application/json');
 	res.send(jsonData);
@@ -36,7 +39,7 @@ app.post('/data', textParser, (req, res) => {
 app.use(express.static(__dirname + '/public'));
 
 app.listen(port, () => {
-	if ( process.env.NODE_ENV === 'production') {
+	if ( isProduction ) {
 		log('Server started on http://127.0.0.1:80/');
 		log("======================================");
 		log("NODE_ENV === 'production'");

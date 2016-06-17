@@ -27,14 +27,14 @@
   },
   "dependencies": {
     "body-parser": "^1.15.1",
-    "bootstrap": "^3.3.6",
     "compression": "^1.6.2",
     "express": "^4.13.4",
-    "jquery": "^2.0.0",
-    "moment": "^2.13.0",
     "pug": "^2.0.0-beta3"
   },
   "devDependencies": {
+    "bootstrap": "^3.3.6",
+    "jquery": "^2.0.0",
+    "moment": "^2.13.0",
     "babel-cli": "^6.9.0",
     "babel-preset-react": "^6.5.0",
     "babelify": "^7.3.0",

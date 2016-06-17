@@ -18,12 +18,9 @@ var AddMusicianPopup = module.exports = React.createClass({
 	handleInstrumentChange: function(event) {
 		var value = parseInt(event.target.value);
 
-		console.log('handleInstrumentChange', value);
-
 		this.setState({instrument: value});
 
 		if ( value === -1 ) {
-			console.log('Opening addNewInstrumentPopup...');
 			eventEmitter.emit('openAddInstrumentPopup');
 		}
 	},
@@ -36,8 +33,6 @@ var AddMusicianPopup = module.exports = React.createClass({
 		});
 	},
 	addMusician( event ) {
-		console.log('this.state', this.state);
-
 		var validationErrors = [];
 
 		// validate Name
@@ -76,7 +71,6 @@ var AddMusicianPopup = module.exports = React.createClass({
 		this.setState(this.getInitialState());
 	},
 	focusNameInput() {
-		console.log('Modal shown event!');
 		this.refs.nameInput.focus();
 	},
 	render() {

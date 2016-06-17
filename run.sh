@@ -1,5 +1,5 @@
 #!/bin/bash -e
 
-cd /root
+cd /root/dist
 
 NODE_ENV=production node server.js &
