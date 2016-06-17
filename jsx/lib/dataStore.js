@@ -153,10 +153,10 @@ eventEmitter.on("removeMusician", (id) => {
 	removeItemById("musicians", id);
 });
 
-eventEmitter.on("addInstrument", (data) => {
-	var id = addItem("instruments", data);
-	eventEmitter.emit("instrumentAdded", id);
-});
+// eventEmitter.on("addInstrument", (data) => {
+// 	var id = addItem("instruments", data);
+// 	eventEmitter.emit("instrumentAdded", id);
+// });
 
 eventEmitter.on("addMusician", (data) => {
 	var id = addItem("musicians", data, (a,b) => {
@@ -179,5 +179,10 @@ eventEmitter.on("addEvent", (data) => {
 });
 
 module.exports = {
-	data: dataStore
+	data: dataStore,
+	addInstrument(data) {
+		var id = addItem("instruments", data);
+
+		return id;
+	}
 };

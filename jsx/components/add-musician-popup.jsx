@@ -25,11 +25,12 @@ var AddMusicianPopup = module.exports = React.createClass({
 		}
 	},
 	componentDidMount() {
-		eventEmitter.on('instrumentAdded', (instrumentId) => {
+		eventEmitter.on('instrumentModal.submitted', (instrumentId) => {
 			this.setState({instrument: instrumentId});
 		});
-		eventEmitter.on('AddInstrumentPopup.close', () => {
-			this.refs.instrumentInput.focus();
+
+		eventEmitter.on('instrumentModal.dismissed', () => {
+			this.setState({instrument: -2});
 		});
 	},
 	addMusician( event ) {

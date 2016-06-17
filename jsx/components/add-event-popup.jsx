@@ -21,8 +21,6 @@ var AddEventPopup = module.exports = React.createClass({
 		this.setState({date: event.target.value});
 	},
 	addEvent( event ) {
-		console.log('this.state', this.state);
-
 		var validationErrors = [];
 
 		// validate Name

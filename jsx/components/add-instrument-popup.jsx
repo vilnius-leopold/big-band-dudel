@@ -8,6 +8,9 @@ const eventEmitter = require('./../lib/event-emitter.js');
 
 var AddInstrumentPopup = module.exports = React.createClass({
 	getInitialState: function() {
+		this.wasDismissed = true;
+		this.addedInstrumentId = null;
+
 		return {
 			name : ''
 		};
@@ -16,8 +19,6 @@ var AddInstrumentPopup = module.exports = React.createClass({
 		this.setState({name: event.target.value});
 	},
 	addInstrument( event ) {
-		console.log('this.state', this.state);
-
 		var validationErrors = [];
 
 		// validate Name
@@ -40,7 +41,9 @@ var AddInstrumentPopup = module.exports = React.createClass({
 		if ( validationErrors.length )
 			return validationErrors;
 
-		eventEmitter.emit("addInstrument", {
+		this.wasDismissed = false;
+
+		this.addedInstrumentId = dataStore.addInstrument({
 			name: trimmedName
 		});
 
@@ -50,12 +53,12 @@ var AddInstrumentPopup = module.exports = React.createClass({
 		this.setState(this.getInitialState());
 	},
 	focusNameInput() {
-		console.log('Modal shown event!');
 		this.refs.nameInput.focus();
 	},
 	emitCloseEvent() {
-		console.log('Emit close event!');
-		eventEmitter.emit('AddInstrumentPopup.close');
+		var eventType = this.wasDismissed ? 'dismissed' : 'submitted';
+
+		eventEmitter.emit('instrumentModal.' + eventType, this.addedInstrumentId);
 	},
 	render() {
 		var options = dataStore.data.instruments.map( (instr) => {
