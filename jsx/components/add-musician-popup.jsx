@@ -4,6 +4,7 @@ const React    = require('react');
 const Modal = require('./modal.jsx');
 
 const eventEmitter = require('./../lib/event-emitter.js');
+var   dataStore    = require('./../lib/dataStore.js');
 
 var AddMusicianPopup = module.exports = React.createClass({
 	getInitialState: function() {
@@ -63,7 +64,7 @@ var AddMusicianPopup = module.exports = React.createClass({
 		if ( validationErrors.length )
 			return validationErrors;
 
-		eventEmitter.emit('addMusician', {
+		dataStore.addMusician({
 			name        : trimmedName,
 			instrumentId: this.state.instrument
 		});

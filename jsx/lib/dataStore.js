@@ -158,31 +158,29 @@ eventEmitter.on("removeMusician", (id) => {
 // 	eventEmitter.emit("instrumentAdded", id);
 // });
 
-eventEmitter.on("addMusician", (data) => {
-	var id = addItem("musicians", data, (a,b) => {
-		if(a.name < b.name) return -1;
-		if(a.name > b.name) return 1;
-		return 0;
-	});
-});
 
 eventEmitter.on("removeEvent", (id) => {
 	removeItemById("events", id);
 });
 
-eventEmitter.on("addEvent", (data) => {
-	data.lineUp = {};
-
-	var id = addItem("events", data, (a,b) => {
-		return a.date - b.date;
-	});
-});
 
 module.exports = {
 	data: dataStore,
 	addInstrument(data) {
-		var id = addItem("instruments", data);
+		return addItem("instruments", data);
+	},
+	addMusician(data) {
+		return addItem("musicians", data, (a,b) => {
+			if(a.name < b.name) return -1;
+			if(a.name > b.name) return 1;
+			return 0;
+		});
+	},
+	addEvent(data) {
+		data.lineUp = {};
 
-		return id;
+		return addItem("events", data, (a,b) => {
+			return a.date - b.date;
+		});
 	}
 };

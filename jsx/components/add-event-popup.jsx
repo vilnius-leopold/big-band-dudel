@@ -4,6 +4,7 @@ const moment   = require('moment');
 const Modal = require('./modal.jsx');
 
 const eventEmitter = require('./../lib/event-emitter.js');
+var   dataStore    = require('./../lib/dataStore.js');
 
 const dateFormat = "DD.MM.YYYY";
 
@@ -56,7 +57,7 @@ var AddEventPopup = module.exports = React.createClass({
 		if ( validationErrors.length )
 			return validationErrors;
 
-		eventEmitter.emit("addEvent",{
+		dataStore.addEvent({
 			title: trimmedTitle,
 			date: userDateObj.valueOf()
 		});
