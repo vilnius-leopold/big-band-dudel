@@ -85,6 +85,12 @@ var EventTable = module.exports = React.createClass({
 				</div>
 				<div id="table-content-wrapper">
 					<div ref="tableScrollPane" id="table-scroll-pane">
+						<div id="pan-left">
+							<span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+						</div>
+						<div id="pan-right">
+							<span className="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+						</div>
 						<div id="table-content" className="">
 							{statusColumns}
 						</div>

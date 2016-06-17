@@ -136,13 +136,13 @@ item-padding    = 10px
 		padding-top:  100px
 		width: 100%
 		height: 100%
-		// overflow-y: scroll
-		// overflow-x: hidden
 
 		#table-scroll-pane
 			width: 100%
 			height: 100%
-			overflow: scroll
+			// overflow: scroll
+			overflow-y: scroll
+			overflow-x: hidden
 
 			#table-content
 				// width: 1200px
@@ -161,3 +161,22 @@ item-padding    = 10px
 						border-right: 1px solid #ddd;
 						border-bottom: 1px solid #ddd;
 
+#pan-left
+#pan-right
+	width: 50px;
+	height: 100%;
+	position: absolute;
+	top: 100px;
+	z-index: 500;
+	vertical-align: middle
+	text-align: center
+	background: white;
+	display: table-cell;
+
+#pan-left
+	left: 202px
+	border-right: 1px solid rgb(221, 221, 221);
+
+#pan-right
+	right: 10px
+	border-left: 1px solid rgb(221, 221, 221);
