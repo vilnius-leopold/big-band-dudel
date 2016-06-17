@@ -54,3 +54,74 @@
 .remove-button:hover{
 	opacity: 1;
 }
+
+sidebar-width   = 200px
+header-height   = 100px
+musician-height = 40px
+event-width     = 140px
+main-width      = 800px
+main-height     = 500px
+
+#event-table
+	position: relative
+	border: 1px solid #ddd
+	overflow: hidden
+	height: main-height
+	width: main-width
+
+	>div
+	>div>div
+	>div>div>div
+	>div>div>div>div
+		border: 1px solid #ddd
+
+	#table-corner
+		position: absolute
+		top: 0
+		left: 0
+		width: sidebar-width
+		height: header-height
+		background: white
+		z-index: 500
+
+	#event-header
+		z-index: 400
+		padding-left: sidebar-width
+		position: absolute
+		left: 0
+		top: 0
+		width: 1400px
+		height: header-height
+		background: white
+
+		.event-item
+			width: event-width
+
+	#musician-sidebar
+		z-index: 400
+		padding-top: header-height
+		position: absolute
+		left: 0
+		top: 0
+		background: white
+
+		.musician-item
+			height: musician-height
+
+	#table-content-wrapper
+		position: absolute
+		top: header-height
+		left: sidebar-width
+		width: 600px
+		height: 400px
+		overflow: scroll
+		// overflow-y: scroll
+		// overflow-x: hidden
+
+		#table-content
+			width: 1200px
+
+			.status-item
+				height: musician-height
+				width: event-width
+

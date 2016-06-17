@@ -11,7 +11,7 @@ var   dataStore          = require('./lib/dataStore.js');
 const AddMusicianPopup   = require('./components/add-musician-popup.jsx');
 const AddEventPopup      = require('./components/add-event-popup.jsx');
 const AddInstrumentPopup = require('./components/add-instrument-popup.jsx');
-const EventTable         = require('./components/event-table.jsx');
+const EventTable         = require('./components/event-table2.jsx');
 
 var AddInstrumentButton = React.createClass({
 	handleClick() {
