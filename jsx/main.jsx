@@ -3,6 +3,9 @@
 const ReactDOM = require('react-dom');
 const React    = require('react');
 
+const $         = require('jquery');
+const bootstrap = require('bootstrap');
+
 // logic
 const eventEmitter       = require('./lib/event-emitter.js');
 var   dataStore          = require('./lib/dataStore.js');
@@ -99,12 +102,19 @@ var App = React.createClass({
 				}
 			});
 		});
+
+		$(this.refs.infoBox).on('close.bs.alert', function () {
+			localStorage.setItem('showInfoBox', false);
+		});
 	},
 	render() {
+		console.log('showInfoBox', localStorage.getItem('showInfoBox'));
+
 		return (
-			<div className="container">
-				<h1>Big Band Dudel</h1>
-				<div className="alert alert-info">
+			<div className="container-fluid">
+				<br/>
+				<div ref="infoBox" className={"alert alert-info alert-dismissible fade in" + (localStorage.getItem('showInfoBox') === "false" ? " hidden" : "")} role="alert">
+					<button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
 					<span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
 					&nbsp;Participate in improving the dudel by submitting
 					<ul>
