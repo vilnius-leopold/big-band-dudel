@@ -61,6 +61,7 @@ musician-height = 40px
 event-width     = 140px
 main-width      = 800px
 main-height     = 500px
+item-padding    = 10px
 
 #event-table
 	position: relative
@@ -69,20 +70,22 @@ main-height     = 500px
 	height: main-height
 	// width: main-width
 
-	>div
-	>div>div
-	>div>div>div
-	>div>div>div>div
-		border: 1px solid #ddd
+	// >div
+	// >div>div
+	// >div>div>div
+	// >div>div>div>div
+	// 	border: 1px solid #ddd
 
 	#table-corner
 		position: absolute
 		top: 0
 		left: 0
-		width: sidebar-width
+		width: sidebar-width + 2px
 		height: header-height
 		background: white
 		z-index: 500
+		border-right: 3px solid #ddd;
+		border-bottom: 3px solid #ddd;
 
 	#event-header
 		z-index: 400
@@ -96,11 +99,18 @@ main-height     = 500px
 		white-space: nowrap;
 		// overflow-x:auto;
 		// overflow-y:hidden;
+		// padding-right: 20px
+		// box-shadow: 0px 0px 8px -2px rgba(0, 0, 0, 0.3);
 
 		.event-item
 			width: event-width
 			display: inline-block;
 			white-space: initial;
+			height: header-height;
+			vertical-align: top;
+			overflow:hidden
+			border-right: 1px solid #ddd;
+			border-bottom: 3px solid #ddd;
 
 	#musician-sidebar
 		z-index: 400
@@ -109,9 +119,14 @@ main-height     = 500px
 		left: 0
 		top: 0
 		background: white
+		// padding-bottom: 20px
+		// box-shadow: 0px 0px 8px -2px rgba(0, 0, 0, 0.3);
 
 		.musician-item
 			height: musician-height
+			overflow:hidden
+			border-right: 3px solid #ddd;
+			border-bottom: 1px solid #ddd;
 
 	#table-content-wrapper
 		position: absolute
@@ -142,4 +157,7 @@ main-height     = 500px
 					.status-item
 						height: musician-height
 						width: event-width
+						overflow:hidden
+						border-right: 1px solid #ddd;
+						border-bottom: 1px solid #ddd;
 
