@@ -26,7 +26,7 @@ var AddInstrumentPopup = module.exports = React.createClass({
 		if (trimmedName === '') {
 			validationErrors.push("Instrument name can not be empty");
 		} else {
-			var index = dataStore.data.instruments.findIndex( (m) => {
+			var index = this.props.instruments.findIndex( (m) => {
 				if (m.name === trimmedName)
 					return true;
 
@@ -40,9 +40,9 @@ var AddInstrumentPopup = module.exports = React.createClass({
 		if ( validationErrors.length )
 			return validationErrors;
 
-		dataStore.addInstrument({
+		eventEmitter.emit("addInstrument", {
 			name: trimmedName
-		})
+		});
 
 		return null;
 	},

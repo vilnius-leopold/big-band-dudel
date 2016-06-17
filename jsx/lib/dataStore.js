@@ -17,7 +17,7 @@ function updateRemoteStore() {
 				} else {
 					// update local store
 					dataStore = response;
-					eventEmitter.emit('updateApp');
+					eventEmitter.emit('dataStore.updated', dataStore);
 				}
 			});
 
@@ -25,7 +25,7 @@ function updateRemoteStore() {
 		} else {
 			// update local store
 			dataStore = response;
-			eventEmitter.emit('updateApp');
+			eventEmitter.emit('dataStore.updated', dataStore);
 		}
 
 	});
@@ -106,29 +106,78 @@ function addItem(listName, data, sorter) {
 	if (sorter)
 		dataStore[listName].sort(sorter);
 
-	eventEmitter.emit('updateApp');
+	eventEmitter.emit('dataStore.updated', dataStore);
 
 	updateRemoteStore();
 
 	return data.id;
 }
 
+function removeItemById(listName, itemId) {
+	var index = dataStore[listName].findIndex( (item) => {
+		return item.id === itemId
+	});
+
+	dataStore[listName].splice(index, 1);
+
+	eventEmitter.emit('dataStore.updated', dataStore);
+
+	updateRemoteStore();
+}
+
+eventEmitter.on("statusChanged", (eventId, musicianId, status) => {
+		var clickedEvent = dataStore.events.find( (e) => {
+			return e.id === eventId;
+		});
+
+		var clickedMember = clickedEvent.lineUp[musicianId];
+
+		if ( ! clickedMember ) {
+			clickedEvent.lineUp[musicianId] = {status: 3};
+			clickedMember = clickedEvent.lineUp[musicianId]
+		}
+
+		clickedMember.status = status;
+
+		eventEmitter.emit('dataStore.updated', dataStore);
+
+		updateRemoteStore();
+});
+
+eventEmitter.on("removeMusician", (id) => {
+	dataStore.events.forEach( (e) => {
+		if ( e.lineUp[id] )
+			delete e.lineUp[id];
+	});
+
+	removeItemById("musicians", id);
+});
+
+eventEmitter.on("addInstrument", (data) => {
+	var id = addItem("instruments", data);
+	eventEmitter.emit("instrumentAdded", id);
+});
+
+eventEmitter.on("addMusician", (data) => {
+	var id = addItem("musicians", data, (a,b) => {
+		if(a.name < b.name) return -1;
+		if(a.name > b.name) return 1;
+		return 0;
+	});
+});
+
+eventEmitter.on("removeEvent", (id) => {
+	removeItemById("events", id);
+});
+
+eventEmitter.on("addEvent", (data) => {
+	data.lineUp = {};
+
+	var id = addItem("events", data, (a,b) => {
+		return a.date - b.date;
+	});
+});
+
 module.exports = {
-	data: dataStore,
-	addMusician( data ) {
-		var id = addItem("musicians", data, (a,b) => {
-			if(a.name < b.name) return -1;
-			if(a.name > b.name) return 1;
-			return 0;
-		});
-	},
-	addInstrument( data ) {
-		var id = addItem("instruments", data);
-		eventEmitter.emit("instrumentAdded", id);
-	},
-	addEvent( data ) {
-		var id = addItem("events", data, (a,b) => {
-			return b.date - a.date;
-		});
-	}
+	data: dataStore
 };

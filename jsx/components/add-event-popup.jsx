@@ -1,10 +1,8 @@
-const ReactDOM = require('react-dom');
 const React    = require('react');
 const moment   = require('moment');
 
 const Modal = require('./modal.jsx');
 
-var   dataStore        = require('./../lib/dataStore.js');
 const eventEmitter = require('./../lib/event-emitter.js');
 
 const dateFormat = "DD.MM.YYYY";
@@ -33,7 +31,7 @@ var AddEventPopup = module.exports = React.createClass({
 		if (trimmedTitle === '') {
 			validationErrors.push("Title can not be empty");
 		} else {
-			var index = dataStore.data.events.findIndex( (m) => {
+			var index = this.props.events.findIndex( (m) => {
 				if (m.title === trimmedTitle)
 					return true;
 
@@ -60,10 +58,9 @@ var AddEventPopup = module.exports = React.createClass({
 		if ( validationErrors.length )
 			return validationErrors;
 
-		dataStore.addEvent({
+		eventEmitter.emit("addEvent",{
 			title: trimmedTitle,
-			date: userDateObj.valueOf(),
-			lineUp: {}
+			date: userDateObj.valueOf()
 		});
 
 		return null;

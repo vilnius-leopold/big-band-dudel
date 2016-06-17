@@ -1,5 +1,13 @@
 const events = require('events');
 
-const EventEmitter = new events.EventEmitter();
+const eventEmitter = new events.EventEmitter();
 
-module.exports = EventEmitter;
+var oldEmit = eventEmitter.emit;
+
+eventEmitter.emit = function() {
+	console.log(arguments[0], arguments[1]);
+
+	oldEmit.apply(eventEmitter, arguments);
+}
+
+module.exports = eventEmitter;

@@ -3,7 +3,6 @@ const React    = require('react');
 
 const Modal = require('./modal.jsx');
 
-var   dataStore        = require('./../lib/dataStore.js');
 const eventEmitter = require('./../lib/event-emitter.js');
 
 var AddMusicianPopup = module.exports = React.createClass({
@@ -47,7 +46,7 @@ var AddMusicianPopup = module.exports = React.createClass({
 		if (trimmedName === '') {
 			validationErrors.push("User name can not be empty");
 		} else {
-			var index = dataStore.data.musicians.findIndex( (m) => {
+			var index = this.props.musicians.findIndex( (m) => {
 				if (m.name === trimmedName)
 					return true;
 
@@ -66,11 +65,10 @@ var AddMusicianPopup = module.exports = React.createClass({
 		if ( validationErrors.length )
 			return validationErrors;
 
-		dataStore.addMusician({
-			name: trimmedName,
+		eventEmitter.emit('addMusician', {
+			name        : trimmedName,
 			instrumentId: this.state.instrument
-		})
-
+		});
 
 		return null;
 	},
@@ -82,7 +80,7 @@ var AddMusicianPopup = module.exports = React.createClass({
 		this.refs.nameInput.focus();
 	},
 	render() {
-		var options = dataStore.data.instruments.map( (instr, i) => {
+		var options = this.props.instruments.map( (instr, i) => {
 			return (
 				<option key={i} value={instr.id}>{instr.name}</option>
 			);
