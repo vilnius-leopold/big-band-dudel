@@ -69,7 +69,7 @@ var ToggleEditButton = React.createClass({
 		return (
 			<button
 				className={"btn btn-default pull-right" + (this.props.editMode ? " active" : "")}
-				onClick={this.props.editMode}
+				onClick={this.handleClick}
 			>
 				<span className="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 				&nbsp;{this.props.editMode ? "Exit Edit Mode" : "Enter Edit Mode"}
@@ -98,7 +98,7 @@ var App = React.createClass({
 					editMode: data
 				}
 			});
-		})
+		});
 	},
 	render() {
 		return (
@@ -130,7 +130,6 @@ var App = React.createClass({
 					musicians={this.state.persistentData.musicians}
 					instruments={this.state.persistentData.instruments}
 				/>
-			{/*
 				<AddMusicianPopup
 					instruments={this.state.persistentData.instruments}
 					musicians={this.state.persistentData.musicians}
@@ -144,7 +143,6 @@ var App = React.createClass({
 				<footer>
 					<a href="https://github.com/vilnius-leopold/big-band-dudel">GitHub Repository</a>
 				</footer>
-			*/}
 			</div>
 		);
 	}

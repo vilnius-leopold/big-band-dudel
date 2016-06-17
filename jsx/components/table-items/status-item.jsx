@@ -14,11 +14,11 @@ var StatusItem = module.exports = React.createClass({
 		if ( ! this.props.editMode )
 			return;
 
-		eventEmitter.emit("statusChanged", {
-			eventId: this.props.eventId,
-			musicianId: this.props.musicianId,
-			status: getNextStatus(this.props.status)
-		});
+		eventEmitter.emit("statusChanged",
+			this.props.eventId,
+			this.props.musicianId,
+			getNextStatus(this.props.status)
+		);
 
 		// var clickedEvent = dataStore.events.find( (e) => {
 		// 	return e.id === this.props.eventId;

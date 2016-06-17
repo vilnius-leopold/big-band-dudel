@@ -60,8 +60,7 @@ var AddEventPopup = module.exports = React.createClass({
 
 		eventEmitter.emit("addEvent",{
 			title: trimmedTitle,
-			date: userDateObj.valueOf(),
-			lineUp: {}
+			date: userDateObj.valueOf()
 		});
 
 		return null;
