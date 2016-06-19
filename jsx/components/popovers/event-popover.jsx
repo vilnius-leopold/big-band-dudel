@@ -86,6 +86,9 @@ var EventPopover = module.exports = React.createClass({
 			);
 		}
 
+		if ( ! instrumentElements.length )
+			instrumentElements = [<em>Apparently everybody hates this event</em>]
+
 		return (
 			<div>
 				<table className="lineup-table">

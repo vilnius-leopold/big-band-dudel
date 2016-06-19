@@ -11,15 +11,6 @@ const EventPopover = require('./../popovers/event-popover.jsx');
 var EventItem = module.exports = React.createClass({
 	removeEvent() {
 		eventEmitter.emit('removeEvent', this.props.eventId);
-
-		// var index = dataStore.events.findIndex( (e) => {
-		// 	return e.id === this.props.eventId;
-		// });
-
-		// dataStore.events.splice(index, 1);
-
-		// updateApp();
-		// updateRemoteStore()
 	},
 	componentDidMount() {
 		var containerSelector = 'popover-container-' + this.props.eventId;
@@ -54,13 +45,6 @@ var EventItem = module.exports = React.createClass({
 		}).on('hide.bs.popover', () => {
 			this.popOverOpen = false;
 		});
-
-
-		// eventEmitter.on('event.popover.show', (eventId) => {
-		// 	if ( this.props.eventId !== eventId ) {
-		// 		popoverObj.popover('hide');
-		// 	}
-		// });
 	},
 	openPopover() {
 		if ( this.popOverOpen ) {

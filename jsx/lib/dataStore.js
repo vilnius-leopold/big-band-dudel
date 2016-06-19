@@ -167,7 +167,11 @@ eventEmitter.on("removeEvent", (id) => {
 module.exports = {
 	data: dataStore,
 	addInstrument(data) {
-		return addItem("instruments", data);
+		return addItem("instruments", data, (a,b) => {
+			if(a.name < b.name) return -1;
+			if(a.name > b.name) return 1;
+			return 0;
+		});
 	},
 	addMusician(data) {
 		return addItem("musicians", data, (a,b) => {
