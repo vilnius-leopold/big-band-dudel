@@ -2,6 +2,7 @@ const React    = require('react');
 const moment   = require('moment');
 
 const eventEmitter = require('./../../lib/event-emitter.js');
+const EventPopover = require('./../popovers/event-popover.jsx');
 
 var EventItem = module.exports = React.createClass({
 	handleClick() {
@@ -28,6 +29,7 @@ var EventItem = module.exports = React.createClass({
 
 				<br />
 				{moment(this.props.date).format("DD.MM.YYYY")}
+				<EventPopover eventId={this.props.eventId}/>
 			</th>
 		);
 	}

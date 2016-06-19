@@ -182,5 +182,14 @@ module.exports = {
 		return addItem("events", data, (a,b) => {
 			return a.date - b.date;
 		});
+	},
+	getEvent(eventId) {
+		return dataStore.events.find( e => e.id === eventId );
+	},
+	getMusicians(eventId) {
+		return dataStore.musicians;
+	},
+	getInstruments(eventId) {
+		return dataStore.instruments;
 	}
 };
