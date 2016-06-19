@@ -49,6 +49,10 @@ var EventItem = module.exports = React.createClass({
 			};
 
 			window.addEventListener('click', handler);
+		}).on('show.bs.popover', () => {
+			this.popOverOpen = true;
+		}).on('hide.bs.popover', () => {
+			this.popOverOpen = false;
 		});
 
 
@@ -59,8 +63,13 @@ var EventItem = module.exports = React.createClass({
 		// });
 	},
 	openPopover() {
+		if ( this.popOverOpen ) {
+			this.popoverObj.popover('hide');
+
+		} else {
+			this.popoverObj.popover('show');
+		}
 		console.log('click event');
-		this.popoverObj.popover('show');
 	},
 	render() {
 		return (
