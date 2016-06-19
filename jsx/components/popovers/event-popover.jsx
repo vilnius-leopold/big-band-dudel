@@ -1,5 +1,4 @@
 const $       = require('jquery');
-// const jQuery  = require('jquery');
 const moment = require('moment');
 const bootstrap = require('bootstrap');
 
@@ -79,8 +78,6 @@ var EventPopover = module.exports = React.createClass({
 				);
 			});
 
-			console.log('statusList', statusList);
-
 			instrumentElements.push(
 				<tr>
 					<th className="lineup-instrument-name">{instrumentName}</th>
@@ -91,7 +88,6 @@ var EventPopover = module.exports = React.createClass({
 
 		return (
 			<div>
-				<h3>Line up</h3>
 				<table className="lineup-table">
 					<tbody>
 						{instrumentElements}
