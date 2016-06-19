@@ -51,7 +51,8 @@ var EventItem = module.exports = React.createClass({
 			this.popoverObj.popover('hide');
 
 		} else {
-			this.popoverObj.popover('show');
+			if ( ! this.props.editMode )
+				this.popoverObj.popover('show');
 		}
 		console.log('click event');
 	},
