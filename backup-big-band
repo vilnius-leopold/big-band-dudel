@@ -6,7 +6,7 @@ mkdir -p /root/backups
 # remove old backup
 if [ "$(ls /root/backups | wc -l)" -gt "60" ]; then
 
-        rm $(ls /root/backups | tail -1)
+	rm $(ls /root/backups | tail -1)
 
 fi
 
