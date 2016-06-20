@@ -1,0 +1,14 @@
+#!/bin/bash -e
+
+# ensure backup directory exists
+mkdir -p /root/backups
+
+# remove old backup
+if [ "$(ls /root/backups | wc -l)" -gt "60" ]; then
+
+	rm $(ls /root/backups | tail -1)
+
+fi
+
+# make backup of database
+cp /root/db/data.json /root/backups/$(date "+%Y-%m-%d")_data.json
