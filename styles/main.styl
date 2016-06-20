@@ -80,7 +80,7 @@ item-padding    = 10px
 		position: absolute
 		top: 0
 		left: 0
-		width: sidebar-width + 2px
+		width: sidebar-width
 		height: header-height
 		background: white
 		z-index: 500
@@ -119,14 +119,17 @@ item-padding    = 10px
 		left: 0
 		top: 0
 		background: white
+		width: sidebar-width
 		// padding-bottom: 20px
 		// box-shadow: 0px 0px 8px -2px rgba(0, 0, 0, 0.3);
 
 		.musician-item
 			height: musician-height
-			overflow:hidden
+			overflow: hidden;
 			border-right: 3px solid #ddd;
 			border-bottom: 1px solid #ddd;
+			padding: 9px 15px;
+			white-space: nowrap;
 
 	#table-content-wrapper
 		position: absolute
@@ -213,6 +216,20 @@ html,body,#app, #layout
 	height: 100%
 
 #layout
-	padding-top: 200px
+	padding-top: 140px
 	padding-bottom: 40px
 	position: relative
+
+header
+	width: 100%;
+	position: fixed
+	top: 0
+	left: 0
+	padding-top: 20px
+footer
+	width: 100%;
+	position: fixed
+	bottom: 0
+	left: 0
+	height: 40px
+	padding-top: 10px

@@ -79,12 +79,80 @@ var App = React.createClass({
 		    showInfoBox    = localStorage.getItem('showInfoBox') === "false";
 
 		return (
+			/*
+			<div className="container-fluid">
+				<br/>
+				<div ref="infoBox" className={"alert alert-info alert-dismissible fade in" + (showInfoBox ? " hidden" : "")} role="alert">
+					<button type="button" className="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+					<Icon type="info-sign"/>
+					&nbsp;Participate in improving the dudel by submitting
+					<ul>
+						<li>feature requests</li>
+						<li>bug reports</li>
+						<li>questions</li>
+					</ul>
+					on the <a href="https://github.com/vilnius-leopold/big-band-dudel/issues">GitHub issue tracker</a>.
+				</div>
+				<div className={"alert alert-success" + (volatileData.editMode ? "" : " invisible")}>
+					<Icon type="info-sign"/>
+					&nbsp;You are currently in <strong>Edit Mode</strong>
+				</div>
+				<div className="clearfix">
+					<button className="btn btn-default" onClick={emit('openAddMusicianPopup')}>
+						Add musician
+					</button>&nbsp;
+					<button className="btn btn-default" onClick={emit('openAddEventPopup')}>
+						Add event
+					</button>
+					<ToggleEditButton editMode={volatileData.editMode}/>
+				</div>
+				<br/>
+
+				<footer>
+					<a href="https://github.com/vilnius-leopold/big-band-dudel">GitHub Repository</a>
+				</footer>
+			</div>
+			*/
+
 			<div id="layout">
+				<header className="container-fluid">
+					<div ref="infoBox" className={"alert alert-info alert-dismissible fade in" + (showInfoBox ? " hidden" : "")} role="alert">
+						<button type="button" className="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+						<Icon type="info-sign"/>
+						&nbsp;Participate in improving the dudel by submitting
+						<ul>
+							<li>feature requests</li>
+							<li>bug reports</li>
+							<li>questions</li>
+						</ul>
+						on the <a href="https://github.com/vilnius-leopold/big-band-dudel/issues">GitHub issue tracker</a>.
+					</div>
+					<div className={"alert alert-success" + (volatileData.editMode ? "" : " invisible")}>
+						<Icon type="info-sign"/>
+						&nbsp;You are currently in <strong>Edit Mode</strong>
+					</div>
+					<div className="clearfix">
+						<button className="btn btn-default" onClick={emit('openAddMusicianPopup')}>
+							Add musician
+						</button>&nbsp;
+						<button className="btn btn-default" onClick={emit('openAddEventPopup')}>
+							Add event
+						</button>
+						<ToggleEditButton editMode={volatileData.editMode}/>
+					</div>
+				</header>
 				<EventTable
 					editMode={volatileData.editMode}
 					events={persistentData.events}
 					musicians={persistentData.musicians}
 					instruments={persistentData.instruments}/>
+				<footer className="container-fluid">
+					<a href="https://github.com/vilnius-leopold/big-band-dudel">GitHub Repository</a>
+				</footer>
 				<AddMusicianPopup
 					instruments={persistentData.instruments}
 					musicians={persistentData.musicians}/>
