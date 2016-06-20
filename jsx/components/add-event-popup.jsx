@@ -27,18 +27,9 @@ var AddEventPopup = module.exports = React.createClass({
 		// validate Name
 		var trimmedTitle = this.state.title.trim();
 
+
 		if (trimmedTitle === '') {
 			validationErrors.push("Title can not be empty");
-		} else {
-			var index = this.props.events.findIndex( (m) => {
-				if (m.title === trimmedTitle)
-					return true;
-
-				return false;
-			});
-
-			if ( index !== -1)
-				validationErrors.push("User <strong>"+trimmedTitle+"</strong> already exists");
 		}
 
 		// validate Instrument
