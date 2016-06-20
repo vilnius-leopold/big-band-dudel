@@ -111,8 +111,8 @@ var App = React.createClass({
 		console.log('showInfoBox', localStorage.getItem('showInfoBox'));
 
 		return (
-			<div className="container-fluid">
-				<br/>
+			<div className="">
+				{/*<br/>
 				<div ref="infoBox" className={"alert alert-info alert-dismissible fade in" + (localStorage.getItem('showInfoBox') === "false" ? " hidden" : "")} role="alert">
 					<button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
 					<span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
@@ -133,7 +133,7 @@ var App = React.createClass({
 					<AddEventButton/>
 					<ToggleEditButton editMode={this.state.volatileData.editMode}/>
 				</div>
-				<br/>
+				<br/>*/}
 				<EventTable
 					editMode={this.state.volatileData.editMode}
 					events={this.state.persistentData.events}
@@ -150,9 +150,9 @@ var App = React.createClass({
 				<AddInstrumentPopup
 					instruments={this.state.persistentData.instruments}
 				/>
-				<footer>
+				{/*<footer>
 					<a href="https://github.com/vilnius-leopold/big-band-dudel">GitHub Repository</a>
-				</footer>
+				</footer>*/}
 			</div>
 		);
 	}
