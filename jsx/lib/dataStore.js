@@ -175,8 +175,11 @@ module.exports = {
 	},
 	addMusician(data) {
 		return addItem("musicians", data, (a,b) => {
-			if(a.name < b.name) return -1;
-			if(a.name > b.name) return 1;
+			var aName = a.name.toLowerCase(),
+			    bName = b.name.toLowerCase();
+
+			if(aName < bName) return -1;
+			if(aName > bName) return 1;
 			return 0;
 		});
 	},
