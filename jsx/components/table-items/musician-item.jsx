@@ -2,34 +2,23 @@ const React    = require('react');
 
 const eventEmitter = require('./../../lib/event-emitter.js');
 
+const Icon = require('./../helpers/icon.jsx');
+const emit = require('./../../lib/helpers/emit.js');
+
+
 var MusicianItem = module.exports = React.createClass({
-	handleClick() {
-		eventEmitter.emit('removeMusician', this.props.musicianId);
-
-		// var index = dataStore.musicians.findIndex( (m) => {
-		// 	return m.id === this.props.musicianId;
-		// });
-
-		// dataStore.musicians.splice(index, 1);
-
-		// dataStore.events.forEach( (e) => {
-		// 	if ( e.lineUp[this.props.musicianId] )
-		// 		delete e.lineUp[this.props.musicianId];
-		// });
-
-		// updateApp();
-		// updateRemoteStore()
-	},
 	render() {
+		var editMode = this.props.editMode;
+
 		return (
-			<th>
+			<th className="musician-item">
 				{this.props.name} [{this.props.instrument}]
 				&nbsp;
-				<span
-					className={"remove-button glyphicon glyphicon-trash" + (this.props.editMode ? "" : " invisible")}
-					aria-hidden="true"
-					onClick={this.handleClick}
-				></span>
+				<Icon
+					className="remove-button"
+					type="trash"
+					show={editMode}
+					onClick={emit('removeMusician', this.props.musicianId)}/>
 			</th>
 		);
 	}
