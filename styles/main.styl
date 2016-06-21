@@ -64,7 +64,6 @@ main-height     = 500px
 item-padding    = 10px
 
 #event-table
-	position: relative
 	border: 1px solid #ddd
 	overflow: hidden
 	height: 100%
@@ -76,7 +75,7 @@ item-padding    = 10px
 	// >div>div>div>div
 	// 	border: 1px solid #ddd
 
-	#table-corner
+	#event-table-corner
 		position: absolute
 		top: 0
 		left: 0
@@ -87,12 +86,12 @@ item-padding    = 10px
 		border-right: 3px solid #ddd;
 		border-bottom: 3px solid #ddd;
 
-	#event-header
+	#event-table-header
 		z-index: 400
 		padding-left: sidebar-width
-		position: absolute
+		position: fixed
 		left: 0
-		top: 0
+		top: 140px
 		// width: 5000px
 		height: header-height
 		background: white
@@ -112,12 +111,12 @@ item-padding    = 10px
 			border-right: 1px solid #ddd;
 			border-bottom: 3px solid #ddd;
 
-	#musician-sidebar
+	#event-table-sidebar
 		z-index: 400
 		padding-top: header-height
-		position: absolute
+		position: fixed
 		left: 0
-		top: 0
+		top: 140px
 		background: white
 		width: sidebar-width
 		// padding-bottom: 20px
@@ -131,58 +130,49 @@ item-padding    = 10px
 			padding: 9px 15px;
 			white-space: nowrap;
 
-	#table-content-wrapper
+
+
+	#event-table-content
+		// width: 1200px
+		white-space: nowrap;
+		padding-top: 240px
+		padding-left: 200px
 		position: absolute
 		top: 0
 		left: 0
-		padding-left: 200px
-		padding-top:  100px
-		width: 100%
-		height: 100%
+		// overflow-x:auto;
+		// overflow-y:hidden;
 
-		#table-scroll-pane
-			width: 100%
-			height: 100%
-			// overflow: scroll
-			overflow-y: scroll
-			overflow-x: auto
+		.status-column
+			display: inline-block;
+			width: event-width
 
-			#table-content
-				// width: 1200px
-				white-space: nowrap;
-				// overflow-x:auto;
-				// overflow-y:hidden;
+			.status-item
+				height: musician-height
+				width: event-width
+				overflow:hidden
+				border-right: 1px solid #ddd;
+				border-bottom: 1px solid #ddd;
 
-				.status-column
-					display: inline-block;
-					width: event-width
+// #pan-left
+// #pan-right
+// 	width: 50px;
+// 	height: 100%;
+// 	position: absolute;
+// 	top: 100px;
+// 	z-index: 500;
+// 	vertical-align: middle
+// 	text-align: center
+// 	background: white;
+// 	display: table-cell;
 
-					.status-item
-						height: musician-height
-						width: event-width
-						overflow:hidden
-						border-right: 1px solid #ddd;
-						border-bottom: 1px solid #ddd;
+// #pan-left
+// 	left: 202px
+// 	border-right: 1px solid rgb(221, 221, 221);
 
-#pan-left
-#pan-right
-	width: 50px;
-	height: 100%;
-	position: absolute;
-	top: 100px;
-	z-index: 500;
-	vertical-align: middle
-	text-align: center
-	background: white;
-	display: table-cell;
-
-#pan-left
-	left: 202px
-	border-right: 1px solid rgb(221, 221, 221);
-
-#pan-right
-	right: 10px
-	border-left: 1px solid rgb(221, 221, 221);
+// #pan-right
+// 	right: 10px
+// 	border-left: 1px solid rgb(221, 221, 221);
 
 .table-event-item
 	cursor: pointer
@@ -225,7 +215,11 @@ header
 	position: fixed
 	top: 0
 	left: 0
-	padding-top: 20px
+	padding: 15px
+	background: white
+	z-index: 500
+	height: 140px
+
 footer
 	width: 100%;
 	position: fixed

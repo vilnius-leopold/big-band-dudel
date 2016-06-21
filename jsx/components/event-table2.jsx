@@ -128,25 +128,19 @@ var EventTable = module.exports = React.createClass({
 
 		return (
 			<div id="event-table">
-				<div id="table-corner"/>
-				<div ref="eventHeader" id="event-header" className="">
-					{events}
-				</div>
-				<div ref="musicianSidebar" id="musician-sidebar">
-					{musicians}
-				</div>
-				<div id="table-content-wrapper">
-					<div ref="tableScrollPane" id="table-scroll-pane">
-						<div id="pan-left" ref="panLeftPanel">
-							<span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-						</div>
-						<div id="pan-right" ref="panRightPanel">
-							<span className="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-						</div>
-						<div id="table-content" className="">
-							{statusColumns}
-						</div>
+				<div ref="eventHeader" id="event-table-header" className="">
+					<div id="event-table-corner"/>
+					<div id="event-table-head-wrapper">
+						{events}
 					</div>
+				</div>
+				<div ref="musicianSidebar" id="event-table-sidebar">
+					<div id="event-table-side-wrapper">
+						{musicians}
+					</div>
+				</div>
+				<div id="event-table-content" className="">
+					{statusColumns}
 				</div>
 			</div>
 		);
