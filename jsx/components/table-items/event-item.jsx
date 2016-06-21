@@ -16,12 +16,12 @@ var EventItem = module.exports = React.createClass({
 		var containerSelector = 'popover-container-' + this.props.eventId;
 
 		this.popoverObj = $(this.refs.eventHeading).popover({
-			container: 'body',
-			html: true,
-			content: '<div id="'+containerSelector+'">Loading...</div>',
-			placement: 'bottom',
-			title: 'Line up',
-			trigger: 'manual'
+			container : 'body',
+			html      : true,
+			content   : '<div id="'+containerSelector+'">Loading...</div>',
+			placement : 'bottom',
+			title     : 'Line up',
+			trigger   : 'manual'
 		});
 
 		this.popoverObj.on('inserted.bs.popover', () => {
