@@ -55,14 +55,12 @@
 	opacity: 1;
 }
 
-sidebar-width   = 200px
-header-height   = 100px
-musician-height = 40px
-event-width     = 160px
-main-width      = 800px
-main-height     = 500px
-item-padding    = 10px
-footer-height   = 40px
+sidebar-width       = 220px
+header-height       = 140px
+table-header-height = 140px
+musician-height     = 40px
+event-width         = 160px
+footer-height       = 40px
 
 #event-table
 	// >div
@@ -73,10 +71,10 @@ footer-height   = 40px
 
 	#event-table-corner
 		position: fixed
-		top: 140px
+		top: header-height
 		left: 0
 		width: sidebar-width
-		height: header-height
+		height: table-header-height
 		background: white
 		z-index: 500
 		border-right: 3px solid #ddd;
@@ -90,8 +88,8 @@ footer-height   = 40px
 		padding-left: sidebar-width
 		position: fixed
 		left: 0
-		top: 140px
-		height: header-height
+		top: header-height
+		height: table-header-height
 		background: white
 		white-space: nowrap
 		border-top: 1px solid #ddd
@@ -101,13 +99,13 @@ footer-height   = 40px
 			position: absolute
 			top: 0px
 			left: 0
-			padding-left: 200px
+			padding-left: sidebar-width
 
 			.table-event-item
 				width: event-width
 				display: inline-block;
 				white-space: initial;
-				height: header-height;
+				height: table-header-height;
 				vertical-align: top;
 				overflow:hidden
 				border-right: 1px solid #ddd;
@@ -117,14 +115,15 @@ footer-height   = 40px
 				font-weight: bold
 
 				.event-title
-					height:40px
+					// overflow: hidden
+					height:80px
 
 	#event-table-sidebar
 		z-index: 400
-		padding-top: header-height
+		padding-top: table-header-height
 		position: fixed
 		left: 0
-		top: 140px
+		top: header-height
 		background: white
 		width: sidebar-width
 		// padding-bottom: 20px
@@ -148,10 +147,9 @@ footer-height   = 40px
 
 
 	#event-table-content
-		// width: 1200px
 		white-space: nowrap;
-		padding-top: 240px
-		padding-left: 200px
+		padding-top: 280px
+		padding-left: sidebar-width
 		padding-bottom: footer-height
 		position: absolute
 		top: 0
