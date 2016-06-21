@@ -25,16 +25,13 @@ var EventItem = module.exports = React.createClass({
 		});
 
 		this.popoverObj.on('inserted.bs.popover', () => {
-			console.log('inserted event');
 			ReactDOM.render(
 				<EventPopover eventId={this.props.eventId}/>,
 				document.querySelector('#' + containerSelector)
 			);
 		}).on('shown.bs.popover', () => {
-			console.log('shown event');
 			// eventEmitter.emit('event.popover.show', this.props.eventId);
 			var handler = () => {
-				console.log('hide event');
 				this.popoverObj.popover('hide');
 				window.removeEventListener('click', handler);
 			};
@@ -54,7 +51,6 @@ var EventItem = module.exports = React.createClass({
 			if ( ! this.props.editMode )
 				this.popoverObj.popover('show');
 		}
-		console.log('click event');
 	},
 	render() {
 		return (

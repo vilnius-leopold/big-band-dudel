@@ -19,7 +19,9 @@ var EventPopover = module.exports = React.createClass({
 		    muscians    = dataStore.getMusicians(),
 		    instruments = dataStore.getInstruments();
 
-		var instrumentList = {};
+		var instrumentList = {},
+		    contentKeyId   = 1,
+		    eventKeyId     = 1;
 
 		for ( var musicianId in lineUp ) {
 			var data = lineUp[musicianId];
@@ -44,7 +46,8 @@ var EventPopover = module.exports = React.createClass({
 			});
 		}
 
-		var instrumentElements = [];
+		var instrumentElements = [],
+		    instrumentKeyId    = 1;
 
 		for ( var instrumentName in instrumentList ) {
 			var musicianData = instrumentList[instrumentName];
@@ -56,6 +59,8 @@ var EventPopover = module.exports = React.createClass({
 
 			if ( statusList.length === 0 )
 				continue;
+
+			var statusKeyId = 1;
 
 			statusList = statusList.sort( (a,b) => {
 				if (a.status > b.status) return 1;
@@ -72,6 +77,7 @@ var EventPopover = module.exports = React.createClass({
 
 				return (
 					<span
+						key={statusKeyId++}
 						title={data.musicianName}
 						className={"lineup-instrument-status-item " + colorClass}
 					/>
@@ -79,7 +85,7 @@ var EventPopover = module.exports = React.createClass({
 			});
 
 			instrumentElements.push(
-				<tr>
+				<tr key={instrumentKeyId++}>
 					<th className="lineup-instrument-name">{instrumentName}</th>
 					<td>{statusList}</td>
 				</tr>
@@ -87,15 +93,21 @@ var EventPopover = module.exports = React.createClass({
 		}
 
 		if ( ! instrumentElements.length )
-			instrumentElements = [<em>Apparently everybody hates this event</em>]
+			instrumentElements = []
 
-		return (
-			<div>
-				<table className="lineup-table">
+		var popupContent = <em key={contentKeyId++}>Apparently everybody hates this event</em>;
+
+		if ( instrumentElements.length )
+			popupContent =
+				<table key={contentKeyId++} className="lineup-table">
 					<tbody>
 						{instrumentElements}
 					</tbody>
-				</table>
+				</table>;
+
+		return (
+			<div key={eventKeyId++}>
+				{popupContent}
 			</div>
 		);
 	}
