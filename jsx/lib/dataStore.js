@@ -163,25 +163,22 @@ eventEmitter.on("removeEvent", (id) => {
 	removeItemById("events", id);
 });
 
+function caseInsensitiveSorting( a, b ) {
+	var aName = a.name.toLowerCase(),
+	    bName = b.name.toLowerCase();
+
+	if(aName < bName) return -1;
+	if(aName > bName) return 1;
+	return 0;
+}
 
 module.exports = {
 	data: dataStore,
 	addInstrument(data) {
-		return addItem("instruments", data, (a,b) => {
-			if(a.name < b.name) return -1;
-			if(a.name > b.name) return 1;
-			return 0;
-		});
+		return addItem("instruments", data, caseInsensitiveSorting);
 	},
 	addMusician(data) {
-		return addItem("musicians", data, (a,b) => {
-			var aName = a.name.toLowerCase(),
-			    bName = b.name.toLowerCase();
-
-			if(aName < bName) return -1;
-			if(aName > bName) return 1;
-			return 0;
-		});
+		return addItem("musicians", data, caseInsensitiveSorting);
 	},
 	addEvent(data) {
 		data.lineUp = {};
