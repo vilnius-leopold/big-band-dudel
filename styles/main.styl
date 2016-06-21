@@ -58,7 +58,7 @@
 sidebar-width   = 200px
 header-height   = 100px
 musician-height = 40px
-event-width     = 140px
+event-width     = 160px
 main-width      = 800px
 main-height     = 500px
 item-padding    = 10px
@@ -81,6 +81,7 @@ footer-height   = 40px
 		z-index: 500
 		border-right: 3px solid #ddd;
 		border-bottom: 3px solid #ddd;
+		border-top: 1px solid #ddd
 
 	#event-table-header
 		overflow: hidden;
@@ -90,14 +91,11 @@ footer-height   = 40px
 		position: fixed
 		left: 0
 		top: 140px
-		// width: 5000px
 		height: header-height
 		background: white
-		white-space: nowrap;
-		// overflow-x:auto;
-		// overflow-y:hidden;
-		// padding-right: 20px
-		// box-shadow: 0px 0px 8px -2px rgba(0, 0, 0, 0.3);
+		white-space: nowrap
+		border-top: 1px solid #ddd
+		border-bottom: 3px solid #ddd;
 
 		#event-table-head-wrapper
 			position: absolute
@@ -105,7 +103,7 @@ footer-height   = 40px
 			left: 0
 			padding-left: 200px
 
-			.event-item
+			.table-event-item
 				width: event-width
 				display: inline-block;
 				white-space: initial;
@@ -114,6 +112,12 @@ footer-height   = 40px
 				overflow:hidden
 				border-right: 1px solid #ddd;
 				border-bottom: 3px solid #ddd;
+				cursor: pointer
+				padding: 5px 15px
+				font-weight: bold
+
+				.event-title
+					height:40px
 
 	#event-table-sidebar
 		z-index: 400
@@ -185,8 +189,6 @@ footer-height   = 40px
 // 	right: 10px
 // 	border-left: 1px solid rgb(221, 221, 221);
 
-.table-event-item
-	cursor: pointer
 
 .lineup-table
 

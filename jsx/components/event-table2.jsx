@@ -25,14 +25,13 @@ var EventTable = module.exports = React.createClass({
 	render() {
 		var events = this.props.events.map( (event) => {
 			return (
-				<div
-					className="event-item"
+				<EventItem
 					key={'event-item-' + event.id}
-				>
-					{event.title}
-					<br/>
-					{event.date}
-				</div>
+					editMode={this.props.editMode}
+					title={event.title}
+					eventId={event.id}
+					date={event.date}
+				/>
 			);
 		});
 

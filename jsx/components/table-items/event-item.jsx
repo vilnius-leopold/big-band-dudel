@@ -58,22 +58,26 @@ var EventItem = module.exports = React.createClass({
 	},
 	render() {
 		return (
-			<th
+			<div
 				ref="eventHeading"
 				onClick={this.openPopover}
 				data-toggle="popover"
 				className="table-event-item"
 			>
-				{this.props.title}
-				&nbsp;<span
-					className={"remove-button glyphicon glyphicon-trash" + (this.props.editMode ? "" : " invisible")}
-					aria-hidden="true"
-					onClick={this.removeEvent}
-				></span>
-
-				<br />
-				{moment(this.props.date).format("DD.MM.YYYY")}
-			</th>
+				<div className="event-title">
+					{this.props.title}
+				</div>
+				<div className="event-options">
+					<span
+						className={"remove-button glyphicon glyphicon-trash" + (this.props.editMode ? "" : " invisible")}
+						aria-hidden="true"
+						onClick={this.removeEvent}
+					></span>
+				</div>
+				<div className="event-date">
+					{moment(this.props.date).format("DD.MM.YYYY")}
+				</div>
+			</div>
 		);
 	}
 });
