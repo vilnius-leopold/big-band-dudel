@@ -9,64 +9,17 @@ var EventTable = module.exports = React.createClass({
 	componentDidMount() {
 		var musicianSidebar = this.refs.musicianSidebar,
 		    eventHeader     = this.refs.eventHeader,
-		    tableScrollPane = this.refs.tableScrollPane;
-
-		var panLeftPanelHidden  = null,
-		    panRightPanelHidden = null;
-
-		// initialize
-		if ( tableScrollPane.scrollLeft === 0 ) {
-			this.refs.panLeftPanel.style.display = 'none';
-			panLeftPanelHidden = true;
-		} else {
-			this.refs.panLeftPanel.style.display = 'block';
-			panLeftPanelHidden = false;
-		}
-
-		if ( tableScrollPane.scrollLeft === tableScrollPane.scrollLeftMax ){
-			this.refs.panRightPanel.style.display = 'none';
-			panRightPanelHidden = true;
-		} else if ( panRightPanelHidden ) {
-			this.refs.panRightPanel.style.display = 'block';
-			panRightPanelHidden = false;
-		}
+		    tableScrollPane = window;
 
 		// listen to scroll event
 		tableScrollPane.addEventListener('scroll', (event) => {
-			var target     = event.target,
-			    scrollLeft = target.scrollLeft,
-			    scrollTop  = target.scrollTop;
+
+			var target     = window,
+			    scrollLeft = target.scrollX,
+			    scrollTop  = target.scrollY;
 
 			musicianSidebar.style.top = -scrollTop  + 'px';
 			eventHeader.style.left    = -scrollLeft + 'px';
-
-			if ( scrollLeft === 0 ) {
-				this.refs.panLeftPanel.style.display = 'none';
-				panLeftPanelHidden = true;
-			} else if ( panLeftPanelHidden ) {
-				this.refs.panLeftPanel.style.display = 'block';
-				panLeftPanelHidden = false;
-			}
-
-			if (scrollLeft === target.scrollLeftMax){
-				this.refs.panRightPanel.style.display = 'none';
-				panRightPanelHidden = true;
-			} else if ( panRightPanelHidden ) {
-				this.refs.panRightPanel.style.display = 'block';
-				panRightPanelHidden = false;
-			}
-
-		});
-
-		// add interaction
-		this.refs.panRightPanel.addEventListener('click', (event) => {
-			var currentScrollLeft = tableScrollPane.scrollLeft;
-			tableScrollPane.scrollLeft = currentScrollLeft + 140;
-		});
-
-		this.refs.panLeftPanel.addEventListener('click', (event) => {
-			var currentScrollLeft = tableScrollPane.scrollLeft;
-			tableScrollPane.scrollLeft = currentScrollLeft - 140;
 		});
 	},
 	render() {
@@ -128,20 +81,20 @@ var EventTable = module.exports = React.createClass({
 
 		return (
 			<div id="event-table">
-				<div ref="eventHeader" id="event-table-header" className="">
-					<div id="event-table-corner"/>
-					<div id="event-table-head-wrapper">
+				<div id="event-table-header" className="">
+					<div ref="eventHeader" id="event-table-head-wrapper">
 						{events}
 					</div>
 				</div>
-				<div ref="musicianSidebar" id="event-table-sidebar">
-					<div id="event-table-side-wrapper">
+				<div id="event-table-sidebar">
+					<div ref="musicianSidebar" id="event-table-side-wrapper">
 						{musicians}
 					</div>
 				</div>
 				<div id="event-table-content" className="">
 					{statusColumns}
 				</div>
+				<div id="event-table-corner"/>
 			</div>
 		);
 	}

@@ -62,13 +62,9 @@ event-width     = 140px
 main-width      = 800px
 main-height     = 500px
 item-padding    = 10px
+footer-height   = 40px
 
 #event-table
-	border: 1px solid #ddd
-	overflow: hidden
-	height: 100%
-	width: 100%
-
 	// >div
 	// >div>div
 	// >div>div>div
@@ -76,8 +72,8 @@ item-padding    = 10px
 	// 	border: 1px solid #ddd
 
 	#event-table-corner
-		position: absolute
-		top: 0
+		position: fixed
+		top: 140px
 		left: 0
 		width: sidebar-width
 		height: header-height
@@ -87,6 +83,8 @@ item-padding    = 10px
 		border-bottom: 3px solid #ddd;
 
 	#event-table-header
+		overflow: hidden;
+		width: 100%;
 		z-index: 400
 		padding-left: sidebar-width
 		position: fixed
@@ -101,15 +99,21 @@ item-padding    = 10px
 		// padding-right: 20px
 		// box-shadow: 0px 0px 8px -2px rgba(0, 0, 0, 0.3);
 
-		.event-item
-			width: event-width
-			display: inline-block;
-			white-space: initial;
-			height: header-height;
-			vertical-align: top;
-			overflow:hidden
-			border-right: 1px solid #ddd;
-			border-bottom: 3px solid #ddd;
+		#event-table-head-wrapper
+			position: absolute
+			top: 0px
+			left: 0
+			padding-left: 200px
+
+			.event-item
+				width: event-width
+				display: inline-block;
+				white-space: initial;
+				height: header-height;
+				vertical-align: top;
+				overflow:hidden
+				border-right: 1px solid #ddd;
+				border-bottom: 3px solid #ddd;
 
 	#event-table-sidebar
 		z-index: 400
@@ -122,13 +126,19 @@ item-padding    = 10px
 		// padding-bottom: 20px
 		// box-shadow: 0px 0px 8px -2px rgba(0, 0, 0, 0.3);
 
-		.musician-item
-			height: musician-height
-			overflow: hidden;
-			border-right: 3px solid #ddd;
-			border-bottom: 1px solid #ddd;
-			padding: 9px 15px;
-			white-space: nowrap;
+		#event-table-side-wrapper
+			position: relative
+			top: 0
+			left: 0
+			padding-top: 0px
+
+			.musician-item
+				height: musician-height
+				overflow: hidden;
+				border-right: 3px solid #ddd;
+				border-bottom: 1px solid #ddd;
+				padding: 9px 15px;
+				white-space: nowrap;
 
 
 
@@ -137,6 +147,7 @@ item-padding    = 10px
 		white-space: nowrap;
 		padding-top: 240px
 		padding-left: 200px
+		padding-bottom: footer-height
 		position: absolute
 		top: 0
 		left: 0
@@ -225,8 +236,11 @@ footer
 	position: fixed
 	bottom: 0
 	left: 0
-	height: 40px
+	height: footer-height
 	padding-top: 10px
+	background: white
+	z-index: 600
+	border-top: 1px solid #ddd
 
 .musician-item
 	white-space: nowrap
