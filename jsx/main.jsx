@@ -8,25 +8,16 @@ const bootstrap = require('bootstrap');
 
 // logic
 const eventEmitter = require('./lib/event-emitter.js');
-var   dataStore    = require('./lib/dataStore.js');
-
-const emit = function(message, arg1) {
-	return eventEmitter.emit.bind(eventEmitter, message, arg1);
-};
+const emit         = require('./lib/helpers/emit.js');
+const dataStore    = require('./lib/dataStore.js');
 
 // components
 const AddMusicianPopup   = require('./components/add-musician-popup.jsx');
 const AddEventPopup      = require('./components/add-event-popup.jsx');
 const AddInstrumentPopup = require('./components/add-instrument-popup.jsx');
 const EventTable         = require('./components/event-table.jsx');
+const Icon               = require('./components/helpers/icon.jsx');
 
-var Icon = React.createClass({
-	render() {
-		return (
-			<span className={"glyphicon glyphicon-" + this.props.type} aria-hidden="true"></span>
-		);
-	}
-});
 
 var ToggleEditButton = React.createClass({
 	render() {
