@@ -5,8 +5,8 @@ var Icon = module.exports = React.createClass({
 		var className =
 			"glyphicon glyphicon-" +
 			this.props.type + " " +
-			this.props.className +
-			(this.props.show ? "" : " invisible");
+			(this.props.className ? this.props.className : "") +
+			(this.props.show === false ? " invisible" : "");
 
 		return (
 			<span
