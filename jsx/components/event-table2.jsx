@@ -41,13 +41,13 @@ var EventTable = module.exports = React.createClass({
 			                     .name;
 
 			return (
-				<div
-					className="musician-item"
+				<MusicianItem
 					key={'musician-item-' + musician.id}
-				>
-					{musician.name}
-					&nbsp;[{instrumentName}]
-				</div>
+					editMode={this.props.editMode}
+					name={musician.name}
+					musicianId={musician.id}
+					instrument={instrumentName}
+				/>
 			);
 		});
 
@@ -58,12 +58,14 @@ var EventTable = module.exports = React.createClass({
 				    keyName = 'status-item-' + event.id + '-' + musician.id;
 
 				return (
-					<div
-						className="status-item"
+					<StatusItem
 						key={keyName}
-					>
-						{status}
-					</div>
+						id={keyName}
+						editMode={this.props.editMode}
+						musicianId={musician.id}
+						eventId={event.id}
+						status={status}
+					/>
 				);
 			});
 

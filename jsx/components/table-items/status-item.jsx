@@ -52,13 +52,13 @@ var StatusItem = module.exports = React.createClass({
 		};
 
 		return (
-			<td
+			<div
 				id={this.props.id}
 				className={"status-item " + statusClasses[this.props.status]}
 				onClick={this.handleClick}
 			>
 				{statusIcons[this.props.status]}
-			</td>
+			</div>
 		);
 	}
 });

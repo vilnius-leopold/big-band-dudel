@@ -11,7 +11,7 @@ var MusicianItem = module.exports = React.createClass({
 		var editMode = this.props.editMode;
 
 		return (
-			<th className="musician-item">
+			<div className="musician-item">
 				{this.props.name} [{this.props.instrument}]
 				&nbsp;
 				<Icon
@@ -19,7 +19,7 @@ var MusicianItem = module.exports = React.createClass({
 					type="trash"
 					show={editMode}
 					onClick={emit('removeMusician', this.props.musicianId)}/>
-			</th>
+			</div>
 		);
 	}
 });
