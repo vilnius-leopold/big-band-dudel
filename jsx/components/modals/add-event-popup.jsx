@@ -1,10 +1,10 @@
 const React    = require('react');
 const moment   = require('moment');
 
-const Modal = require('./modal.jsx');
+const Modal = require('./../modal.jsx');
 
-const eventEmitter = require('./../lib/event-emitter.js');
-var   dataStore    = require('./../lib/dataStore.js');
+const eventEmitter = require('./../../lib/event-emitter.js');
+var   dataStore    = require('./../../lib/dataStore.js');
 
 const dateFormat = "DD.MM.YYYY";
 
