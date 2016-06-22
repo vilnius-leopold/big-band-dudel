@@ -1,10 +1,10 @@
 const ReactDOM = require('react-dom');
 const React    = require('react');
 
-const Modal = require('./modal.jsx');
+const Modal = require('./../modal.jsx');
 
-const eventEmitter = require('./../lib/event-emitter.js');
-var   dataStore    = require('./../lib/dataStore.js');
+const eventEmitter = require('./../../lib/event-emitter.js');
+var   dataStore    = require('./../../lib/dataStore.js');
 
 var AddMusicianPopup = module.exports = React.createClass({
 	getInitialState: function() {

@@ -12,10 +12,17 @@ const emit         = require('./lib/helpers/emit.js');
 const dataStore    = require('./lib/dataStore.js');
 
 // components
+<<<<<<< HEAD
 const AddMusicianPopup   = require('./components/add-musician-popup.jsx');
 const AddEventPopup      = require('./components/add-event-popup.jsx');
 const AddInstrumentPopup = require('./components/add-instrument-popup.jsx');
 const EventTable         = require('./components/event-table2.jsx');
+=======
+const AddMusicianPopup   = require('./components/modals/add-musician-popup.jsx');
+const AddEventPopup      = require('./components/modals/add-event-popup.jsx');
+const AddInstrumentPopup = require('./components/modals/add-instrument-popup.jsx');
+const EventTable         = require('./components/event-table.jsx');
+>>>>>>> master
 const Icon               = require('./components/helpers/icon.jsx');
 
 
