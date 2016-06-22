@@ -30,8 +30,11 @@ var Modal = React.createClass({
 			.on('hide.bs.modal'  , this.props.onClose)
 			.on('hidden.bs.modal', this.props.onClosed);
 
-		eventEmitter.on(this.props.triggerEvent, () => {
+		eventEmitter.on(this.props.triggerEvent, ( data ) => {
 			this.modalObj.modal('show');
+
+			if ( this.props.onTrigger )
+				this.props.onTrigger(data);
 		});
 	},
 	onConfirm() {
@@ -66,8 +69,20 @@ var Modal = React.createClass({
 							{this.props.children}
 						</div>
 						<div className="modal-footer">
-							<button type="button" className="btn btn-default" data-dismiss="modal">Cancel</button>
-							<button type="button" onClick={this.onConfirm} className="btn btn-primary">Add</button>
+							<button
+								type="button"
+								className="btn btn-default"
+								data-dismiss="modal"
+							>
+								Cancel
+							</button>
+							<button
+								type="button"
+								onClick={this.onConfirm}
+								className="btn btn-primary"
+							>
+								{this.props.submitButton ? this.props.submitButton : "Add"}
+							</button>
 						</div>
 					</div>
 				</div>
