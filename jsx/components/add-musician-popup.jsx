@@ -81,9 +81,6 @@ var AddMusicianPopup = module.exports = React.createClass({
 		return null;
 	},
 	onTrigger( data ) {
-		console.log('current state', this.state);
-		console.log('triggered AddMusicianPopup', data);
-
 		if ( data )
 			this.setState(data);
 	},
