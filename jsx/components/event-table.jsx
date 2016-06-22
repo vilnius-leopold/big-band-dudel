@@ -31,10 +31,13 @@ var EventTable = module.exports = React.createClass({
 
 
 			var instrumentName = "";
+			var instrumentId   = -1;
 			var instrumentData = this.props.instruments.find( instr => instr.id === musician.instrumentId);
 
-			if (instrumentData)
+			if (instrumentData) {
 				instrumentName = instrumentData.name;
+				instrumentId   = instrumentData.id;
+			}
 
 			columns.unshift(
 				<MusicianItem
@@ -43,6 +46,7 @@ var EventTable = module.exports = React.createClass({
 					name={musician.name}
 					musicianId={musician.id}
 					instrument={instrumentName}
+					instrumentId={instrumentId}
 				/>
 			);
 

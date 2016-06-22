@@ -172,6 +172,24 @@ function caseInsensitiveSorting( a, b ) {
 	return 0;
 }
 
+
+function updateItem(listName, data, sorter) {
+	var index = dataStore[listName].findIndex( (item) => {
+		return item.id === data.id;
+	});
+
+	dataStore[listName][index] = data;
+
+	if (sorter)
+		dataStore[listName].sort(sorter);
+
+	eventEmitter.emit('dataStore.updated', dataStore);
+
+	updateRemoteStore();
+
+	return data.id;
+}
+
 module.exports = {
 	data: dataStore,
 	addInstrument(data) {
@@ -179,6 +197,9 @@ module.exports = {
 	},
 	addMusician(data) {
 		return addItem("musicians", data, caseInsensitiveSorting);
+	},
+	updateMusician(data) {
+		return updateItem("musicians", data, caseInsensitiveSorting);
 	},
 	addEvent(data) {
 		data.lineUp = {};

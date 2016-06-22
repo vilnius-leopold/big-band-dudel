@@ -19,6 +19,12 @@ var MusicianItem = module.exports = React.createClass({
 					type="trash"
 					show={editMode}
 					onClick={emit('removeMusician', this.props.musicianId)}/>
+			&nbsp;
+				<Icon
+					className="remove-button"
+					type="pencil"
+					show={editMode}
+					onClick={emit('openAddMusicianPopup', {id: this.props.musicianId, name: this.props.name, instrumentId: this.props.instrumentId})}/>
 			</div>
 		);
 	}

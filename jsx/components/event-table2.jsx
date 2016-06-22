@@ -36,9 +36,14 @@ var EventTable = module.exports = React.createClass({
 		});
 
 		var musicians = this.props.musicians.map( (musician) => {
-			var instrumentName = this.props.instruments
-			                     .find( instr => instr.id === musician.instrumentId)
-			                     .name;
+			var instrumentName = "";
+			var instrumentId   = -1;
+			var instrumentData = this.props.instruments.find( instr => instr.id === musician.instrumentId);
+
+			if (instrumentData) {
+				instrumentName = instrumentData.name;
+				instrumentId   = instrumentData.id;
+			}
 
 			return (
 				<MusicianItem
@@ -47,6 +52,7 @@ var EventTable = module.exports = React.createClass({
 					name={musician.name}
 					musicianId={musician.id}
 					instrument={instrumentName}
+					instrumentId={instrumentId}
 				/>
 			);
 		});

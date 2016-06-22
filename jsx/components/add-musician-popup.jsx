@@ -9,8 +9,9 @@ var   dataStore    = require('./../lib/dataStore.js');
 var AddMusicianPopup = module.exports = React.createClass({
 	getInitialState: function() {
 		return {
+			id         : null,
 			name       : '',
-			instrument : -2
+			instrumentId : -2
 		};
 	},
 	handleNameChange: function(event) {
@@ -19,7 +20,7 @@ var AddMusicianPopup = module.exports = React.createClass({
 	handleInstrumentChange: function(event) {
 		var value = parseInt(event.target.value);
 
-		this.setState({instrument: value});
+		this.setState({instrumentId: value});
 
 		if ( value === -1 ) {
 			eventEmitter.emit('openAddInstrumentPopup');
@@ -27,12 +28,12 @@ var AddMusicianPopup = module.exports = React.createClass({
 	},
 	componentDidMount() {
 		eventEmitter.on('instrumentModal.submitted', (instrumentId) => {
-			this.setState({instrument: instrumentId});
+			this.setState({instrumentId: instrumentId});
 			this.refs.instrumentInput.focus();
 		});
 
 		eventEmitter.on('instrumentModal.dismissed', () => {
-			this.setState({instrument: -2});
+			this.setState({instrumentId: -2});
 			this.refs.instrumentInput.focus();
 		});
 	},
@@ -44,7 +45,7 @@ var AddMusicianPopup = module.exports = React.createClass({
 
 		if (trimmedName === '') {
 			validationErrors.push("User name can not be empty");
-		} else {
+		} else if ( this.state.id === null ) {
 			var index = this.props.musicians.findIndex( (m) => {
 				if (m.name === trimmedName)
 					return true;
@@ -57,19 +58,34 @@ var AddMusicianPopup = module.exports = React.createClass({
 		}
 
 		// validate Instrument
-		if (this.state.instrument < 0) {
+		if (this.state.instrumentId < 0) {
 			validationErrors.push("You must select an instrument");
 		}
 
 		if ( validationErrors.length )
 			return validationErrors;
 
-		dataStore.addMusician({
-			name        : trimmedName,
-			instrumentId: this.state.instrument
-		});
+		if ( this.state.id === null ) {
+			dataStore.addMusician({
+				name        : trimmedName,
+				instrumentId: this.state.instrumentId
+			});
+		} else {
+			dataStore.updateMusician({
+				id          : this.state.id,
+				name        : trimmedName,
+				instrumentId: this.state.instrumentId
+			});
+		}
 
 		return null;
+	},
+	onTrigger( data ) {
+		console.log('current state', this.state);
+		console.log('triggered AddMusicianPopup', data);
+
+		if ( data )
+			this.setState(data);
 	},
 	clearInputs() {
 		this.setState(this.getInitialState());
@@ -84,13 +100,18 @@ var AddMusicianPopup = module.exports = React.createClass({
 			);
 		});
 
+		var modalTitle = this.state.id ? "Edit musician" : "Add musician";
+		var submitButton = this.state.id ? "Save" : "Add";
+
 		return (
 			<Modal
-				modalTitle="Add musician"
+				modalTitle={modalTitle}
+				submitButton={submitButton}
 				triggerEvent="openAddMusicianPopup"
 				onShow={this.clearInputs}
 				onShown={this.focusNameInput}
 				onConfirm={this.addMusician}
+				onTrigger={this.onTrigger}
 			>
 				<div className="form-group">
 					<label>Name</label>
@@ -110,7 +131,7 @@ var AddMusicianPopup = module.exports = React.createClass({
 						ref="instrumentInput"
 						className="form-control"
 						onChange={this.handleInstrumentChange}
-						value={this.state.instrument}
+						value={this.state.instrumentId}
 					>
 						<option value={-2}>Select instrument</option>
 						{options}
