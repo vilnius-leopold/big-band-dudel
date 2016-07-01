@@ -3,8 +3,9 @@
 		"server": {
 			"cmd": "node server.js"
 		},
-		"babelify": {
-			"cmd": "./node_modules/.bin/browserify jsx/main.jsx -o public/main.js"
+		"watchify": {
+			"cmd": "node auto-build.js",
+			"mute": true
 		},
 		"stylus": {
 			"cmd": "./node_modules/.bin/stylus --compress --include node_modules/bootstrap/dist/css --include-css < styles/main.styl > public/main.css"
@@ -16,23 +17,16 @@
 		"livereload": {
 			"cmd": "curl http://localhost:35729/changed?files=index.html",
 			"mute": true,
-			"waitFor": ["stylus", "babelify"]
+			"waitFor": ["stylus"]
 		}
 	},
 	"oneOff": [
 		"lr-server",
-		"babelify",
+		"watchify",
 		"stylus",
 		"server"
 	],
 	"fileChangeActions": [
-		{
-			"files": [
-				"jsx/**/*",
-				"package.json"
-			],
-			"task": "babelify"
-		},
 		{
 			"files": [
 				"styles/**/*"
@@ -42,7 +36,7 @@
 		{
 			"files": [
 				"views/**/*",
-				"public/**/*"
+				"public/main.css"
 			],
 			"task": "livereload"
 		},

@@ -11,7 +11,15 @@
   "browserify": {
     "transform": [
       "browserify-shim",
-      ["babelify", { "presets": ["es2015", "react"] }]
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015",
+            "react"
+          ]
+        }
+      ]
     ]
   },
   "browser": {
@@ -32,17 +40,18 @@
     "pug": "^2.0.0-beta3"
   },
   "devDependencies": {
-    "bootstrap": "^3.3.6",
-    "jquery": "^2.0.0",
-    "moment": "^2.13.0",
     "babel-cli": "^6.9.0",
     "babel-preset-react": "^6.5.0",
     "babelify": "^7.3.0",
+    "bootstrap": "^3.3.6",
     "browserify": "^13.0.1",
     "browserify-shim": "^3.8.12",
+    "jquery": "^2.0.0",
     "make-livereload": "^0.1.2",
+    "moment": "^2.13.0",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
-    "stylus": "^0.54.5"
+    "stylus": "^0.54.5",
+    "watchify": "^3.7.0"
   }
 }
