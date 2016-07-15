@@ -5,7 +5,7 @@
 		},
 		"watchify": {
 			"cmd": "node auto-build.js",
-			"mute": true
+			"mute": false
 		},
 		"babelify": {
 			"cmd": "./node_modules/.bin/browserify jsx/main.jsx -o public/main.js"

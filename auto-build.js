@@ -18,10 +18,21 @@ function bundle() {
 
 	var bundleStream = b.bundle();
 
+	bundleStream.on('error', (err) => {
+		// clean up error message
+		delete err.stream;
+		delete err.pos;
+		delete err.loc;
+		delete err._babel;
+		delete err.codeFrame;
+		delete err.filename;
+
+		console.error(err);
+	});
+
 	bundleStream.on('end', () => {
-		console.log('stream close!');
 		console.log('reloading!');
-		require('child_process').execSync("curl http://localhost:35729/changed?files=index.html", {shell: true});
+		require('child_process').execSync("curl -s http://localhost:35729/changed?files=index.html", {shell: true});
 	});
 
 	bundleStream.pipe(fs.createWriteStream('public/main.js'));
